@@ -3,171 +3,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anime Quest - Visual Novel Style</title>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Slingshot Quest - Angry Birds Style</title>
+    <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            background: linear-gradient(180deg, #87CEEB 0%, #98D8E8 40%, #B4E4F5 70%, #E8F4E8 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-family: 'Quicksand', sans-serif;
+            font-family: 'Nunito', sans-serif;
             overflow: hidden;
         }
 
         body::before {
             content: '';
             position: fixed;
-            top: -50%; left: -50%; right: -50%; bottom: -50%;
-            width: 200%; height: 200%;
+            top: 0; left: 0; right: 0; bottom: 0;
             background: 
-                radial-gradient(circle at 20% 20%, rgba(255, 182, 193, 0.3) 0%, transparent 30%),
-                radial-gradient(circle at 80% 80%, rgba(135, 206, 250, 0.3) 0%, transparent 30%),
-                radial-gradient(circle at 50% 50%, rgba(255, 218, 185, 0.2) 0%, transparent 50%);
-            animation: floatBackground 20s linear infinite;
+                radial-gradient(ellipse 120px 80px at 10% 15%, rgba(255,255,255,0.9) 0%, transparent 70%),
+                radial-gradient(ellipse 180px 100px at 25% 10%, rgba(255,255,255,0.8) 0%, transparent 70%),
+                radial-gradient(ellipse 150px 90px at 50% 20%, rgba(255,255,255,0.85) 0%, transparent 70%),
+                radial-gradient(ellipse 200px 110px at 80% 12%, rgba(255,255,255,0.8) 0%, transparent 70%),
+                radial-gradient(ellipse 140px 85px at 95% 25%, rgba(255,255,255,0.9) 0%, transparent 70%);
             pointer-events: none;
+            z-index: 0;
         }
 
-        @keyframes floatBackground {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        body::after {
+            content: '';
+            position: fixed;
+            top: 5%; left: -20%;
+            width: 300px; height: 100px;
+            background: radial-gradient(ellipse at center, rgba(255,255,255,0.6) 0%, transparent 70%);
+            animation: floatCloud 40s linear infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes floatCloud {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(100vw + 300px)); }
         }
 
         #gameContainer {
             position: relative;
-            border-radius: 20px;
+            border-radius: 12px;
             overflow: hidden;
             box-shadow: 
-                0 10px 40px rgba(0, 0, 0, 0.2),
-                0 0 0 4px rgba(255, 255, 255, 0.8),
-                0 0 60px rgba(255, 182, 193, 0.4);
+                0 15px 50px rgba(0, 0, 0, 0.3),
+                0 0 0 5px #5D4037,
+                0 0 0 8px #3E2723;
+            border: 5px solid #5D4037;
+            z-index: 1;
         }
 
         #gameCanvas { display: block; }
 
         #ui {
             position: absolute;
-            top: 0; left: 0; right: 0;
-            padding: 15px 20px;
+            top: 10px; left: 10px; right: 10px;
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            background: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0) 100%);
+            pointer-events: none;
+            z-index: 10;
         }
 
-        .anime-panel {
-            background: linear-gradient(145deg, rgba(255,255,255,0.95), rgba(255,240,245,0.9));
-            border-radius: 16px;
-            padding: 12px 18px;
-            box-shadow: 0 4px 20px rgba(255, 105, 180, 0.15), inset 0 -2px 0 rgba(255, 105, 180, 0.1);
-            border: 2px solid rgba(255, 105, 180, 0.2);
-            backdrop-filter: blur(10px);
+        .hud-panel {
+            background: linear-gradient(145deg, #5D4037, #4E342E);
+            border-radius: 15px;
+            padding: 8px 15px;
+            box-shadow: 
+                0 4px 15px rgba(0,0,0,0.3),
+                inset 0 2px 0 rgba(255,255,255,0.1),
+                inset 0 -2px 0 rgba(0,0,0,0.2);
+            border: 3px solid #3E2723;
+            pointer-events: auto;
         }
 
-        .char-display { display: flex; align-items: center; gap: 12px; }
+        .hud-left { display: flex; gap: 10px; }
 
-        .char-avatar {
-            width: 55px; height: 55px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #ff9a9e, #fecfef);
-            border: 3px solid white;
-            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 28px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .char-avatar::after {
-            content: '';
-            position: absolute; inset: 0; border-radius: 50%;
-            background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.5) 50%, transparent 60%);
-            animation: shimmer 3s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) rotate(45deg); }
-        }
-
-        .char-info { display: flex; flex-direction: column; gap: 6px; }
-
-        .char-name { font-size: 14px; font-weight: 700; color: #5a4a6a; }
-
-        .hp-sp-container { display: flex; flex-direction: column; gap: 4px; }
-
-        .bar-row { display: flex; align-items: center; gap: 8px; }
-
-        .bar-label { font-size: 11px; font-weight: 600; color: #8a7a9a; width: 24px; }
-
-        .anime-bar {
-            width: 100px; height: 10px;
-            background: #e8e0f0;
-            border-radius: 10px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .anime-bar::before {
-            content: '';
-            position: absolute; top: 0; left: 0; right: 0; height: 50%;
-            background: linear-gradient(180deg, rgba(255,255,255,0.6), transparent);
-            border-radius: 10px 10px 0 0;
-        }
-
-        .hp-bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #ff6b6b, #ee5a5a);
-            border-radius: 10px;
-            transition: width 0.4s ease;
-            box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
-        }
-
-        .sp-bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #74b9ff, #5a9fd4);
-            border-radius: 10px;
-            transition: width 0.4s ease;
-            box-shadow: 0 0 10px rgba(116, 185, 255, 0.5);
-        }
-
-        .stats-row { display: flex; gap: 12px; margin-top: 6px; }
-
-        .stat-badge {
-            display: flex; align-items: center; gap: 4px;
-            padding: 4px 10px;
-            background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
-            border-radius: 20px;
-            font-size: 12px; font-weight: 600;
-            color: #6d4c00;
-            box-shadow: 0 2px 8px rgba(253, 203, 110, 0.4);
-        }
-
-        .level-badge {
-            background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+        .score-display {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             color: white;
-            padding: 8px 16px;
-            border-radius: 25px;
-            font-size: 13px; font-weight: 700;
-            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.4);
+            font-family: 'Luckiest Guy', cursive;
+            font-size: 22px;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
         }
+
+        .score-icon {
+            width: 35px; height: 35px;
+            background: linear-gradient(145deg, #FFD700, #FFA500);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            box-shadow: 0 2px 8px rgba(255,165,0,0.5);
+            border: 3px solid #FF8F00;
+        }
+
+        .coin-display { color: #FFD700; font-size: 20px; }
+
+        .hud-right { display: flex; gap: 10px; }
+
+        .level-display {
+            background: linear-gradient(145deg, #E53935, #C62828);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-family: 'Luckiest Guy', cursive;
+            font-size: 20px;
+            box-shadow: 0 4px 15px rgba(229,57,53,0.4);
+            border: 3px solid #B71C1C;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+        }
+
+        .lives-display {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: linear-gradient(145deg, #424242, #303030);
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 3px solid #212121;
+        }
+
+        .life-heart { font-size: 22px; animation: heartBeat 1s ease infinite; }
+
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        .lives-count {
+            color: white;
+            font-family: 'Luckiest Guy', cursive;
+            font-size: 20px;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+        }
+
+        .pause-btn {
+            width: 45px; height: 45px;
+            background: linear-gradient(145deg, #FFC107, #FFB300);
+            border-radius: 50%;
+            border: 3px solid #FF8F00;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            box-shadow: 0 4px 15px rgba(255,193,7,0.4);
+            transition: all 0.2s ease;
+        }
+
+        .pause-btn:hover { transform: scale(1.1); }
+        .pause-btn:active { transform: scale(0.95); }
 
         #levelIndicator {
             position: absolute;
-            top: 85px; left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, #ff7675, #d63031);
-            padding: 10px 35px;
-            border-radius: 25px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(145deg, #E53935, #C62828);
+            padding: 15px 50px;
+            border-radius: 30px;
             color: white;
-            font-size: 14px; font-weight: 700;
-            box-shadow: 0 4px 20px rgba(214, 48, 49, 0.4);
-            z-index: 10;
-            letter-spacing: 1px;
+            font-family: 'Luckiest Guy', cursive;
+            font-size: 30px;
+            box-shadow: 0 6px 25px rgba(229,57,53,0.5);
+            border: 4px solid #B71C1C;
+            z-index: 15;
+            letter-spacing: 2px;
+            text-shadow: 3px 3px 0 rgba(0,0,0,0.3);
+            animation: levelPopIn 0.5s ease-out;
+        }
+
+        @keyframes levelPopIn {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.2); }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
         }
 
         .screen-overlay {
@@ -176,150 +197,366 @@
             display: flex; flex-direction: column;
             align-items: center; justify-content: center;
             z-index: 100;
-            backdrop-filter: blur(8px);
         }
 
-        #startScreen { background: linear-gradient(135deg, rgba(255, 240, 245, 0.98), rgba(255, 218, 185, 0.98)); }
-        #gameOverScreen { background: linear-gradient(135deg, rgba(45, 45, 55, 0.95), rgba(30, 30, 40, 0.98)); }
-        #levelCompleteScreen { background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(240, 255, 240, 0.98)); }
-        #winScreen { background: linear-gradient(135deg, rgba(255, 215, 0, 0.95), rgba(255, 180, 0, 0.98)); }
+        #startScreen { background: linear-gradient(180deg, #87CEEB 0%, #98D8E8 50%, #B4E4F5 100%); }
+        #gameOverScreen { background: linear-gradient(180deg, #37474F 0%, #263238 100%); }
+        #levelCompleteScreen { background: linear-gradient(180deg, #C8E6C9 0%, #A5D6A7 50%, #81C784 100%); }
+        #winScreen { background: linear-gradient(180deg, #FFD54F 0%, #FFCA28 50%, #FFC107 100%); }
 
-        .screen-title { font-size: 42px; font-weight: 700; margin-bottom: 15px; letter-spacing: 2px; }
-        .title-pink { color: #ff6b9d; text-shadow: 3px 3px 0 #fff, 0 0 30px rgba(255, 107, 157, 0.5); }
-        .title-white { color: #fff; text-shadow: 3px 3px 0 rgba(0,0,0,0.2), 0 0 30px rgba(255,255,255,0.5); }
-        .title-green { color: #00b894; text-shadow: 3px 3px 0 #fff, 0 0 30px rgba(0, 184, 148, 0.5); }
-        .title-gold { color: #ffeaa7; text-shadow: 3px 3px 0 #d4a000, 0 0 30px rgba(255, 215, 0, 0.5); }
+        .angry-bird-logo {
+            width: 140px; height: 140px;
+            position: relative;
+            margin-bottom: 15px;
+        }
 
-        .anime-card {
-            background: linear-gradient(145deg, rgba(255,255,255,0.95), rgba(255,240,250,0.9));
-            border-radius: 24px;
-            padding: 35px 50px;
-            margin: 20px 0;
-            box-shadow: 0 10px 40px rgba(255, 105, 180, 0.2), 0 0 0 4px rgba(255, 255, 255, 0.5);
+        .bird-body {
+            width: 110px; height: 110px;
+            background: linear-gradient(145deg, #E53935, #C62828);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 
+                inset -12px -12px 25px rgba(0,0,0,0.2),
+                inset 8px 8px 15px rgba(255,255,255,0.2),
+                0 10px 30px rgba(0,0,0,0.3);
+            border: 4px solid #B71C1C;
+        }
+
+        .bird-eyebrow {
+            position: absolute;
+            width: 35px; height: 10px;
+            background: #212121;
+            top: 22px;
+            border-radius: 8px;
+        }
+
+        .bird-eyebrow.left { left: 18px; transform: rotate(-20deg); }
+        .bird-eyebrow.right { right: 18px; transform: rotate(20deg); }
+
+        .bird-eye {
+            position: absolute;
+            width: 30px; height: 30px;
+            background: white;
+            border-radius: 50%;
+            top: 32px;
+            border: 3px solid #212121;
+        }
+
+        .bird-eye.left { left: 20px; }
+        .bird-eye.right { right: 20px; }
+
+        .bird-pupil {
+            position: absolute;
+            width: 15px; height: 15px;
+            background: #212121;
+            border-radius: 50%;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .bird-pupil::after {
+            content: '';
+            position: absolute;
+            width: 5px; height: 5px;
+            background: white;
+            border-radius: 50%;
+            top: 2px; right: 2px;
+        }
+
+        .bird-mouth {
+            position: absolute;
+            width: 45px; height: 25px;
+            background: #FFB300;
+            bottom: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 0 0 45px 45px;
+            border: 3px solid #FF8F00;
+            border-top: none;
+        }
+
+        .bird-feather {
+            position: absolute;
+            width: 22px; height: 35px;
+            background: linear-gradient(145deg, #C62828, #B71C1C);
+            border-radius: 50%;
+            top: -12px;
+        }
+
+        .bird-feather.left { left: 12px; transform: rotate(-25deg); }
+        .bird-feather.right { right: 12px; transform: rotate(25deg); }
+
+        .screen-title { 
+            font-family: 'Luckiest Guy', cursive;
+            font-size: 48px; 
+            margin-bottom: 20px; 
+            letter-spacing: 3px;
+            text-shadow: 4px 4px 0 rgba(0,0,0,0.3);
+        }
+        
+        .title-red { color: #E53935; }
+        .title-white { color: #FFFFFF; text-shadow: 4px 4px 0 rgba(0,0,0,0.5); }
+        .title-green { color: #2E7D32; }
+        .title-gold { color: #FF8F00; text-shadow: 4px 4px 0 #5D4037; }
+
+        .game-card {
+            background: linear-gradient(145deg, #FFFFFF, #F5F5F5);
+            border-radius: 20px;
+            padding: 30px 50px;
+            margin: 15px 0;
+            box-shadow: 
+                0 10px 40px rgba(0,0,0,0.2),
+                0 0 0 5px #5D4037,
+                0 0 0 8px #3E2723;
             text-align: center;
+            border: 4px solid #5D4037;
         }
 
-        .anime-title {
-            font-size: 32px; font-weight: 700;
-            background: linear-gradient(135deg, #ff6b9d, #a29bfe);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .game-title {
+            font-family: 'Luckiest Guy', cursive;
+            font-size: 44px;
+            color: #E53935;
+            text-shadow: 3px 3px 0 #5D4037;
             margin-bottom: 8px;
         }
 
-        .anime-subtitle { font-size: 14px; color: #9a8aaa; letter-spacing: 3px; }
-        .subtitle { font-size: 16px; margin-bottom: 25px; color: #7a6a8a; }
+        .game-subtitle {
+            font-size: 18px; 
+            color: #5D4037; 
+            letter-spacing: 3px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 18px; 
+            color: #5D4037; 
+            margin: 15px 0; 
+            font-weight: 700;
+        }
 
         .btn {
-            padding: 16px 45px;
-            font-family: 'Quicksand', sans-serif;
-            font-size: 16px; font-weight: 700;
-            background: linear-gradient(135deg, #ff6b9d, #ff8fab);
-            color: white; border: none;
-            border-radius: 30px;
-            cursor: pointer; margin: 10px;
-            transition: all 0.3s ease;
-            box-shadow: 0 6px 0 #e55a87, 0 8px 25px rgba(255, 107, 157, 0.4);
-            letter-spacing: 1px;
-            position: relative; overflow: hidden;
+            padding: 15px 50px; 
+            border: none; 
+            border-radius: 25px;
+            font-size: 22px; 
+            font-weight: 800; 
+            cursor: pointer;
+            font-family: 'Luckiest Guy', cursive;
+            letter-spacing: 2px;
+            margin: 10px;
+            transition: all 0.2s ease;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
         }
 
         .btn::before {
             content: '';
-            position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s;
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 50%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.3), transparent);
+            border-radius: 25px 25px 0 0;
         }
 
-        .btn:hover::before { left: 100%; }
-        .btn:hover { transform: translateY(-3px); box-shadow: 0 9px 0 #e55a87, 0 12px 35px rgba(255, 107, 157, 0.5); }
-        .btn:active { transform: translateY(2px); box-shadow: 0 4px 0 #e55a87, 0 6px 20px rgba(255, 107, 157, 0.3); }
+        .btn:hover { transform: translateY(-5px) scale(1.05); }
+        .btn:active { transform: translateY(0) scale(0.98); }
 
-        .btn-purple { background: linear-gradient(135deg, #a29bfe, #6c5ce7); box-shadow: 0 6px 0 #5b4ccc, 0 8px 25px rgba(108, 92, 231, 0.4); }
-        .btn-purple:hover { box-shadow: 0 9px 0 #5b4ccc, 0 12px 35px rgba(108, 92, 231, 0.5); }
-        .btn-gold { background: linear-gradient(135deg, #ffeaa7, #fdcb6e); color: #6d4c00; box-shadow: 0 6px 0 #e0a800, 0 8px 25px rgba(253, 203, 110, 0.4); }
-        .btn-gold:hover { box-shadow: 0 9px 0 #e0a800, 0 12px 35px rgba(253, 203, 110, 0.5); }
+        .btn-red { 
+            background: linear-gradient(145deg, #E53935, #C62828);
+            color: white;
+            box-shadow: 0 6px 0 #B71C1C, 0 10px 20px rgba(229,57,53,0.4);
+        }
 
-        .level-select { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 20px 0; }
+        .btn-green { 
+            background: linear-gradient(145deg, #43A047, #2E7D32);
+            color: white;
+            box-shadow: 0 6px 0 #1B5E20, 0 10px 20px rgba(67,160,71,0.4);
+        }
+
+        .btn-blue { 
+            background: linear-gradient(145deg, #1E88E5, #1565C0);
+            color: white;
+            box-shadow: 0 6px 0 #0D47A1, 0 10px 20px rgba(30,136,229,0.4);
+        }
+
+        .btn-gold { 
+            background: linear-gradient(145deg, #FFB300, #FFA000);
+            color: #5D4037;
+            box-shadow: 0 6px 0 #FF8F00, 0 10px 20px rgba(255,179,0,0.4);
+        }
+
+        .level-select {
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 12px; 
+            justify-content: center;
+            max-width: 320px; 
+            margin: 20px 0;
+        }
 
         .level-btn {
-            width: 60px; height: 60px;
-            font-family: 'Quicksand', sans-serif;
-            font-size: 18px; font-weight: 700;
-            background: linear-gradient(145deg, #fff, #fff0f5);
-            color: #ff6b9d;
-            border: 3px solid #ffb8d0;
-            border-radius: 16px;
-            cursor: pointer; transition: all 0.2s;
-            box-shadow: 0 4px 15px rgba(255, 107, 157, 0.2);
+            width: 55px; height: 55px;
+            border-radius: 50%;
+            border: none;
+            font-family: 'Luckiest Guy', cursive;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: white;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.3), 0 6px 15px rgba(0,0,0,0.2);
+            position: relative;
         }
 
-        .level-btn:hover:not(:disabled) {
-            background: linear-gradient(145deg, #ff6b9d, #ff8fab);
-            color: white; border-color: #ff6b9d;
-            transform: scale(1.1);
-            box-shadow: 0 6px 25px rgba(255, 107, 157, 0.4);
+        .level-btn::before {
+            content: '';
+            position: absolute;
+            top: 5px; left: 10px; right: 10px;
+            height: 15px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
         }
 
-        .level-btn:disabled { opacity: 0.4; cursor: not-allowed; background: #f0f0f0; color: #ccc; border-color: #e0e0e0; }
-        .level-btn.completed { background: linear-gradient(145deg, #55efc4, #00b894); color: white; border-color: #00b894; }
+        .level-btn:hover:not(:disabled) { transform: translateY(-3px) scale(1.1); }
+        .level-btn:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(50%); }
+        .level-btn.red { background: linear-gradient(145deg, #E53935, #C62828); border: 4px solid #B71C1C; }
+        .level-btn.green { background: linear-gradient(145deg, #43A047, #2E7D32); border: 4px solid #1B5E20; }
+        .level-btn.completed { background: linear-gradient(145deg, #43A047, #2E7D32); border: 4px solid #1B5E20; }
 
-        .progress-container { width: 300px; margin: 15px 0; }
-        .progress-label { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 12px; color: #9a8aaa; font-weight: 600; }
-        .anime-progress { height: 12px; background: rgba(255, 255, 255, 0.8); border-radius: 12px; overflow: hidden; box-shadow: inset 0 2px 5px rgba(0,0,0,0.1); }
-        .anime-progress-fill { height: 100%; background: linear-gradient(90deg, #ff6b9d, #a29bfe, #74b9ff); border-radius: 12px; transition: width 0.5s ease; }
-
-        .instructions { font-size: 13px; color: #9a8aaa; margin: 15px 0; line-height: 2; }
-        .key { display: inline-block; background: linear-gradient(145deg, #fff, #f8f0ff); padding: 6px 14px; margin: 0 4px; border-radius: 8px; border: 2px solid #e0d0f0; color: #8a7aaa; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-
-        #mobileControls { display: none; position: fixed; bottom: 25px; left: 0; right: 0; padding: 0 25px; justify-content: space-between; z-index: 50; }
-
-        .mobile-btn {
-            width: 70px; height: 70px; border-radius: 50%;
-            background: linear-gradient(145deg, rgba(255,255,255,0.9), rgba(255,240,250,0.9));
-            border: 4px solid rgba(255, 107, 157, 0.4);
-            color: #ff6b9d; font-size: 28px;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; user-select: none; -webkit-user-select: none;
-            touch-action: manipulation;
-            box-shadow: 0 4px 20px rgba(255, 107, 157, 0.3);
-            transition: all 0.2s;
+        .level-btn.completed::after {
+            content: '✓';
+            position: absolute;
+            font-size: 30px;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
         }
 
-        .mobile-btn:active { transform: scale(0.9); background: linear-gradient(145deg, #ff6b9d, #ff8fab); color: white; }
-        .control-group { display: flex; gap: 15px; }
+        .progress-container { margin: 20px 0; }
 
-        @media (max-width: 850px) {
-            #mobileControls { display: flex; }
-            #gameCanvas { max-width: 100vw; }
-            .screen-title { font-size: 28px; }
-            .level-select { grid-template-columns: repeat(3, 1fr); }
+        .progress-label {
+            display: flex; 
+            justify-content: space-between;
+            font-size: 16px; 
+            color: #5D4037; 
+            margin-bottom: 10px;
+            font-weight: 700;
         }
 
-        .hidden { display: none !important; }
-        .stars { font-size: 36px; margin: 15px 0; letter-spacing: 8px; }
+        .angry-progress {
+            width: 280px; 
+            height: 22px;
+            background: linear-gradient(145deg, #5D4037, #4E342E);
+            border-radius: 15px; 
+            overflow: hidden;
+            border: 4px solid #3E2723;
+            box-shadow: inset 0 3px 8px rgba(0,0,0,0.3);
+        }
 
-        .stat-row-display { display: flex; justify-content: center; gap: 30px; margin: 15px 0; }
+        .angry-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #E53935, #EF5350);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 15px rgba(229,57,53,0.5);
+        }
+
+        .stars { font-size: 50px; margin: 15px 0; display: flex; gap: 12px; }
+
+        .star { color: #FFD700; text-shadow: 2px 2px 0 #FF8F00; animation: starPop 0.4s ease-out; }
+        .star.empty { color: #9E9E9E; text-shadow: none; }
+
+        @keyframes starPop {
+            0% { transform: scale(0) rotate(-180deg); }
+            50% { transform: scale(1.3) rotate(10deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        .stat-row-display { display: flex; gap: 20px; margin: 20px 0; }
+
         .stat-box {
-            text-align: center; padding: 15px 25px;
-            background: linear-gradient(145deg, rgba(255,255,255,0.9), rgba(255,240,250,0.8));
-            border-radius: 20px; border: 2px solid rgba(255, 107, 157, 0.2);
-            box-shadow: 0 4px 20px rgba(255, 107, 157, 0.15);
+            text-align: center; 
+            padding: 15px 25px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 3px solid #5D4037;
         }
 
         .stat-box-value {
-            font-size: 28px; font-weight: 700;
-            background: linear-gradient(135deg, #ff6b9d, #a29bfe);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-family: 'Luckiest Guy', cursive;
+            font-size: 34px; 
+            color: #E53935;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.1);
         }
 
-        .stat-box-label { font-size: 11px; color: #9a8aaa; text-transform: uppercase; letter-spacing: 2px; margin-top: 4px; }
+        .stat-box-label { 
+            font-size: 14px; 
+            color: #5D4037; 
+            margin-top: 5px; 
+            font-weight: 700;
+        }
 
-        @keyframes victoryPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
-        .victory-effect { animation: victoryPulse 0.5s ease-in-out infinite; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-        .float-animation { animation: float 3s ease-in-out infinite; }
+        .hidden { display: none !important; }
+
+        #mobileControls {
+            position: fixed; 
+            bottom: 25px; 
+            left: 0; 
+            right: 0;
+            display: flex; 
+            justify-content: center; 
+            z-index: 50;
+        }
+
+        .control-group { display: flex; gap: 20px; }
+
+        .mobile-btn {
+            width: 75px; 
+            height: 75px; 
+            border-radius: 50%;
+            border: none; 
+            font-size: 32px;
+            background: linear-gradient(145deg, #5D4037, #4E342E);
+            box-shadow: 0 6px 0 #3E2723, 0 8px 20px rgba(0,0,0,0.3);
+            cursor: pointer; 
+            transition: all 0.1s ease;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mobile-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #3E2723, 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        @media (max-width: 850px) {
+            #gameContainer { transform: scale(0.85); }
+            .game-title { font-size: 34px; }
+            .screen-title { font-size: 38px; }
+        }
+
+        @media (max-width: 700px) {
+            #gameContainer { transform: scale(0.7); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .bounce { animation: bounce 0.6s ease infinite; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .shake { animation: shake 0.3s ease; }
     </style>
 </head>
 <body>
@@ -327,84 +564,142 @@
         <canvas id="gameCanvas" width="800" height="480"></canvas>
         
         <div id="ui">
-            <div class="char-display">
-                <div class="char-avatar">
-                    <canvas id="avatarCanvas" width="50" height="50"></canvas>
+            <div class="hud-left">
+                <div class="hud-panel score-display">
+                    <div class="score-icon">⭐</div>
+                    <span id="score">0</span>
                 </div>
-                <div class="char-info">
-                    <div class="char-name">✨ Hikari ✨</div>
-                    <div class="hp-sp-container">
-                        <div class="bar-row">
-                            <span class="bar-label">HP</span>
-                            <div class="anime-bar"><div class="hp-bar-fill" id="hpFill" style="width: 100%"></div></div>
-                        </div>
-                        <div class="bar-row">
-                            <span class="bar-label">SP</span>
-                            <div class="anime-bar"><div class="sp-bar-fill" id="spFill" style="width: 100%"></div></div>
-                        </div>
-                    </div>
-                    <div class="stats-row">
-                        <div class="stat-badge">💎 <span id="coins">0</span></div>
-                        <div class="stat-badge">⭐ <span id="score">0</span></div>
-                        <div class="stat-badge">❤️ <span id="lives">3</span></div>
-                    </div>
+                <div class="hud-panel score-display">
+                    <div class="score-icon">💎</div>
+                    <span class="coin-display" id="coins">0</span>
                 </div>
             </div>
-            <div class="level-badge">LV.<span id="playerLevel">1</span></div>
+            <div class="hud-right">
+                <div class="level-display">LV.<span id="playerLevel">1</span></div>
+                <div class="lives-display">
+                    <span class="life-heart">❤️</span>
+                    <span class="lives-count" id="lives">3</span>
+                </div>
+            </div>
         </div>
         
-        <div id="levelIndicator" class="hidden">✨ CHAPTER <span id="chapterLevel">1</span> ✨</div>
+        <div id="levelIndicator" class="hidden">LEVEL <span id="chapterLevel">1</span></div>
         
         <div id="startScreen" class="screen-overlay">
-            <div class="anime-card float-animation">
-                <div class="anime-title">🌸 Anime Quest 🌸</div>
-                <div class="anime-subtitle">VISUAL ADVENTURE</div>
+            <div class="angry-bird-logo bounce">
+                <div class="bird-body">
+                    <div class="bird-feather left"></div>
+                    <div class="bird-feather right"></div>
+                    <div class="bird-eyebrow left"></div>
+                    <div class="bird-eyebrow right"></div>
+                    <div class="bird-eye left"><div class="bird-pupil"></div></div>
+                    <div class="bird-eye right"><div class="bird-pupil"></div></div>
+                    <div class="bird-mouth"></div>
+                </div>
             </div>
-            <div class="subtitle">12 magical chapters await...</div>
+            <div class="game-card float-animation">
+                <div class="game-title">SLINGSHOT QUEST</div>
+                <div class="game-subtitle">ANGRY BIRDS STYLE</div>
+            </div>
+            <div class="subtitle">12 challenging levels await!</div>
             <div class="progress-container">
-                <div class="progress-label"><span>Story Progress</span><span id="progressText">0/12</span></div>
-                <div class="anime-progress"><div class="anime-progress-fill" id="progressFill" style="width: 0%"></div></div>
+                <div class="progress-label">
+                    <span>Progress</span>
+                    <span id="progressText">0/12</span>
+                </div>
+                <div class="angry-progress">
+                    <div class="angry-progress-fill" id="progressFill" style="width: 0%"></div>
+                </div>
             </div>
             <div class="level-select" id="levelSelect"></div>
-            <div class="instructions">
-                <span class="key">← →</span> or <span class="key">A D</span> Move &nbsp;&nbsp; <span class="key">↑</span> or <span class="key">SPACE</span> Jump
-            </div>
-            <button class="btn" onclick="startGame(1)">🌟 BEGIN</button>
+            <button class="btn btn-red" onclick="startGame(1)">▶ PLAY</button>
         </div>
         
         <div id="levelCompleteScreen" class="screen-overlay hidden">
-            <div class="anime-card"><div class="anime-title">✨ Complete! ✨</div></div>
-            <div class="stars victory-effect" id="levelStars">⭐⭐⭐</div>
-            <div class="stat-row-display">
-                <div class="stat-box"><div class="stat-box-value" id="levelScore">0</div><div class="stat-box-label">EXP</div></div>
-                <div class="stat-box"><div class="stat-box-value" id="levelCoins">0</div><div class="stat-box-label">Gems</div></div>
-                <div class="stat-box"><div class="stat-box-value" id="levelTime">0s</div><div class="stat-box-label">Time</div></div>
+            <div class="game-card">
+                <div class="screen-title title-green">LEVEL CLEAR!</div>
             </div>
-            <button class="btn btn-purple" onclick="nextLevel()">✨ NEXT</button>
-            <button class="btn" onclick="restartFromLevelComplete()">🔄 RETRY</button>
+            <div class="stars" id="levelStars">
+                <span class="star">⭐</span>
+                <span class="star">⭐</span>
+                <span class="star">⭐</span>
+            </div>
+            <div class="stat-row-display">
+                <div class="stat-box">
+                    <div class="stat-box-value" id="levelScore">0</div>
+                    <div class="stat-box-label">SCORE</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-box-value" id="levelCoins">0</div>
+                    <div class="stat-box-label">GEMS</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-box-value" id="levelTime">0s</div>
+                    <div class="stat-box-label">TIME</div>
+                </div>
+            </div>
+            <button class="btn btn-green" onclick="nextLevel()">▶ NEXT</button>
+            <button class="btn btn-blue" onclick="restartFromLevelComplete()">↻ RETRY</button>
         </div>
         
         <div id="gameOverScreen" class="screen-overlay hidden">
-            <div class="screen-title title-white">💔 Game Over</div>
-            <div class="subtitle" style="color: #aaa;">Don't give up, warrior!</div>
-            <div class="stat-row-display">
-                <div class="stat-box"><div class="stat-box-value" id="finalScore" style="background: linear-gradient(135deg, #ffeaa7, #fdcb6e); -webkit-background-clip: text;">0</div><div class="stat-box-label">Total EXP</div></div>
-                <div class="stat-box"><div class="stat-box-value" id="finalLevel" style="background: linear-gradient(135deg, #ff6b9d, #a29bfe); -webkit-background-clip: text;">1</div><div class="stat-box-label">Chapter</div></div>
+            <div class="angry-bird-logo shake">
+                <div class="bird-body">
+                    <div class="bird-feather left"></div>
+                    <div class="bird-feather right"></div>
+                    <div class="bird-eyebrow left" style="transform: rotate(-40deg);"></div>
+                    <div class="bird-eyebrow right" style="transform: rotate(40deg);"></div>
+                    <div class="bird-eye left"><div class="bird-pupil"></div></div>
+                    <div class="bird-eye right"><div class="bird-pupil"></div></div>
+                    <div class="bird-mouth" style="height: 15px; border-radius: 0 0 30px 30px;"></div>
+                </div>
             </div>
-            <button class="btn btn-purple" onclick="retryLevel()">💪 RETRY</button>
-            <button class="btn" onclick="restartGame()">🏠 HOME</button>
+            <div class="screen-title title-red">GAME OVER</div>
+            <div class="subtitle" style="color: #B0BEC5;">Don't give up, champion!</div>
+            <div class="stat-row-display">
+                <div class="stat-box">
+                    <div class="stat-box-value" id="finalScore">0</div>
+                    <div class="stat-box-label">SCORE</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-box-value" id="finalLevel">1</div>
+                    <div class="stat-box-label">LEVEL</div>
+                </div>
+            </div>
+            <button class="btn btn-red" onclick="retryLevel()">↻ RETRY</button>
+            <button class="btn btn-gold" onclick="restartGame()">🏠 MENU</button>
         </div>
         
         <div id="winScreen" class="screen-overlay hidden">
-            <div class="anime-card"><div class="anime-title">🏆 Victory! 🏆</div></div>
-            <div class="subtitle">You conquered all 12 chapters!</div>
-            <div class="stars victory-effect">👑✨👑✨👑</div>
-            <div class="stat-row-display">
-                <div class="stat-box"><div class="stat-box-value" id="winScore">0</div><div class="stat-box-label">Total EXP</div></div>
-                <div class="stat-box"><div class="stat-box-value" id="winCoins">0</div><div class="stat-box-label">Gems</div></div>
-                <div class="stat-box"><div class="stat-box-value" id="winTime">0s</div><div class="stat-box-label">Time</div></div>
+            <div class="angry-bird-logo bounce">
+                <div class="bird-body" style="background: linear-gradient(145deg, #FFD700, #FFA000); border-color: #FF8F00;">
+                    <div class="bird-feather left" style="background: linear-gradient(145deg, #FFD700, #FFA000);"></div>
+                    <div class="bird-feather right" style="background: linear-gradient(145deg, #FFD700, #FFA000);"></div>
+                    <div class="bird-eyebrow left"></div>
+                    <div class="bird-eyebrow right"></div>
+                    <div class="bird-eye left"><div class="bird-pupil"></div></div>
+                    <div class="bird-eye right"><div class="bird-pupil"></div></div>
+                    <div class="bird-mouth"></div>
+                </div>
             </div>
-            <button class="btn btn-gold" onclick="restartGame()">🌟 AGAIN</button>
+            <div class="screen-title title-gold">YOU WIN!</div>
+            <div class="subtitle">All 12 levels conquered!</div>
+            <div class="stars">🏆🏆🏆</div>
+            <div class="stat-row-display">
+                <div class="stat-box">
+                    <div class="stat-box-value" id="winScore">0</div>
+                    <div class="stat-box-label">SCORE</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-box-value" id="winCoins">0</div>
+                    <div class="stat-box-label">GEMS</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-box-value" id="winTime">0s</div>
+                    <div class="stat-box-label">TIME</div>
+                </div>
+            </div>
+            <button class="btn btn-gold" onclick="restartGame()">▶ AGAIN</button>
         </div>
     </div>
 
@@ -419,77 +714,6 @@
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
-        const avatarCanvas = document.getElementById('avatarCanvas');
-        const avatarCtx = avatarCanvas.getContext('2d');
-
-        // Draw anime avatar
-        function drawAvatar() {
-            const ac = avatarCtx;
-            ac.clearRect(0, 0, 50, 50);
-            
-            // Background gradient
-            const gradient = ac.createRadialGradient(25, 25, 0, 25, 25, 30);
-            gradient.addColorStop(0, '#ffccdd');
-            gradient.addColorStop(1, '#ffb8d0');
-            ac.fillStyle = gradient;
-            ac.beginPath();
-            ac.arc(25, 25, 24, 0, Math.PI * 2);
-            ac.fill();
-            
-            // Hair back
-            ac.fillStyle = '#4a3728';
-            ac.beginPath();
-            ac.arc(25, 22, 18, Math.PI, 0);
-            ac.fill();
-            
-            // Hair sides
-            ac.beginPath();
-            ac.ellipse(10, 28, 8, 15, 0.2, 0, Math.PI * 2);
-            ac.fill();
-            ac.beginPath();
-            ac.ellipse(40, 28, 8, 15, -0.2, 0, Math.PI * 2);
-            ac.fill();
-            
-            // Face
-            ac.fillStyle = '#ffe4d0';
-            ac.beginPath();
-            ac.arc(25, 26, 14, 0, Math.PI * 2);
-            ac.fill();
-            
-            // Eyes
-            ac.fillStyle = '#4a90d9';
-            ac.beginPath();
-            ac.ellipse(19, 24, 5, 6, 0, 0, Math.PI * 2);
-            ac.fill();
-            ac.beginPath();
-            ac.ellipse(31, 24, 5, 6, 0, 0, Math.PI * 2);
-            ac.fill();
-            
-            // Eye highlights
-            ac.fillStyle = '#fff';
-            ac.beginPath();
-            ac.arc(20, 22, 2, 0, Math.PI * 2);
-            ac.fill();
-            ac.beginPath();
-            ac.arc(32, 22, 2, 0, Math.PI * 2);
-            ac.fill();
-            
-            // Blush
-            ac.fillStyle = 'rgba(255, 150, 180, 0.4)';
-            ac.beginPath();
-            ac.ellipse(15, 30, 4, 2, 0, 0, Math.PI * 2);
-            ac.fill();
-            ac.beginPath();
-            ac.ellipse(35, 30, 4, 2, 0, 0, Math.PI * 2);
-            ac.fill();
-            
-            // Mouth
-            ac.fillStyle = '#ff9999';
-            ac.beginPath();
-            ac.arc(25, 32, 3, 0, Math.PI);
-            ac.fill();
-        }
-        drawAvatar();
 
         // Game state
         let gameRunning = false;
@@ -499,16 +723,19 @@
         let cameraX = 0, levelStartTime = 0, totalTime = 0;
         let unlockedLevels = JSON.parse(localStorage.getItem('unlockedLevels')) || [1];
         let completedLevels = JSON.parse(localStorage.getItem('completedLevels')) || [];
+        
+        if (!Array.isArray(unlockedLevels)) unlockedLevels = [1];
+        if (!Array.isArray(completedLevels)) completedLevels = [];
+        
         let particles = [], floatingTexts = [], screenShake = 0, spRecharge = 100;
 
         const GRAVITY = 0.5, FRICTION = 0.88, TILE_SIZE = 32;
 
         const player = {
-            x: 50, y: 300, width: 44, height: 64,
+            x: 50, y: 300, width: 40, height: 50,
             vx: 0, vy: 0, speed: 5, jumpPower: -12,
-            grounded: false, direction: 1, invincible: 0,
-            frame: 0, animTimer: 0, auraPhase: 0, state: 'idle',
-            hairColor: '#4a3728', eyeColor: '#4a90d9', skinColor: '#ffe4d0', outfitColor: '#ff6b9d'
+            grounded: false, invincible: 0, direction: 1,
+            state: 'idle', frame: 0, animTimer: 0, auraPhase: 0
         };
 
         const keys = { left: false, right: false, jump: false, jumpPressed: false };
@@ -533,7 +760,7 @@
 
             const themeOrder = ['pink', 'blue', 'purple', 'green', 'orange', 'rainbow', 'pink', 'blue', 'purple', 'green', 'orange', 'rainbow'];
             level.theme = themeOrder[(levelNum - 1) % themeOrder.length];
-            const theme = themes[level.theme];
+            const theme = themes[level.theme] || themes.pink;
             canvas.style.background = `linear-gradient(180deg, ${theme.sky1} 0%, ${theme.sky2} 55%, ${theme.ground2} 55%, ${theme.ground2} 100%)`;
 
             for (let x = 0; x < level.width; x += TILE_SIZE) {
@@ -590,7 +817,7 @@
                     vx: 1.5 + levelNum * 0.15, vy: 0,
                     patrolStart: x - patrolRange, patrolEnd: x + patrolRange,
                     alive: true, squashTimer: 0,
-                    type: enemyTypes[Math.floor(Math.random() * enemyTypes.length)],
+                    type: enemyTypes[Math.min(enemyTypes.length - 1, Math.max(0, Math.floor(Math.random() * enemyTypes.length)))],
                     animFrame: 0, hue: Math.random() * 360
                 });
             }
@@ -618,19 +845,19 @@
             for (let i = 0; i < count; i++) {
                 particles.push({
                     x, y, vx: (Math.random() - 0.5) * 12, vy: (Math.random() - 0.5) * 12 - 5,
-                    life: 50 + Math.random() * 20, color, size: 4 + Math.random() * 6, rotation: Math.random() * Math.PI * 2
+                    life: 40 + Math.random() * 20, size: 4 + Math.random() * 6, color, angle: Math.random() * Math.PI * 2
                 });
             }
         }
 
         function createFloatingText(x, y, text, color = '#ff6b9d') {
-            floatingTexts.push({ x, y, text, color, life: 60, vy: -2.5 });
+            floatingTexts.push({ x, y, text, color, life: 60, vy: -2 });
         }
 
         function updateParticles() {
             for (let i = particles.length - 1; i >= 0; i--) {
                 const p = particles[i];
-                p.x += p.vx; p.y += p.vy; p.vy += 0.25; p.rotation += 0.1; p.life--;
+                p.x += p.vx; p.y += p.vy; p.vy += 0.2; p.life--; p.angle += 0.1;
                 if (p.life <= 0) particles.splice(i, 1);
             }
             for (let i = floatingTexts.length - 1; i >= 0; i--) {
@@ -643,30 +870,20 @@
         function drawParticles() {
             particles.forEach(p => {
                 ctx.save();
-                ctx.globalAlpha = p.life / 70;
-                ctx.translate(p.x - cameraX, p.y);
-                ctx.rotate(p.rotation);
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.angle);
+                ctx.globalAlpha = p.life / 60;
                 ctx.fillStyle = p.color;
-                ctx.shadowColor = p.color;
-                ctx.shadowBlur = 15;
-                ctx.beginPath();
-                for (let i = 0; i < 5; i++) {
-                    const angle = (i * 4 * Math.PI / 5) - Math.PI/2;
-                    const r = i % 2 === 0 ? p.size : p.size/2;
-                    ctx.lineTo(Math.cos(angle) * r, Math.sin(angle) * r);
-                }
-                ctx.closePath();
-                ctx.fill();
+                ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
                 ctx.restore();
             });
-            ctx.globalAlpha = 1;
         }
 
         function drawFloatingTexts() {
             floatingTexts.forEach(t => {
                 ctx.globalAlpha = t.life / 60;
                 ctx.fillStyle = t.color;
-                ctx.font = 'bold 22px Quicksand';
+                ctx.font = 'bold 22px Nunito';
                 ctx.textAlign = 'center';
                 ctx.shadowColor = '#fff';
                 ctx.shadowBlur = 10;
@@ -686,13 +903,11 @@
                 player.vy = player.jumpPower; player.grounded = false; player.state = 'jump';
                 keys.jumpPressed = true;
                 createParticle(player.x + player.width/2, player.y + player.height, '#ffb8d0', 8);
-                createFloatingText(player.x + player.width/2, player.y, '✨', '#ff6b9d');
             }
             if (!keys.jump) keys.jumpPressed = false;
             if (!player.grounded) player.state = 'jump';
             player.auraPhase += 0.08;
             if (spRecharge < 100) spRecharge += 0.15;
-            document.getElementById('spFill').style.width = spRecharge + '%';
 
             player.vy += GRAVITY;
             if (player.vy > 14) player.vy = 14;
@@ -728,10 +943,9 @@
 
             if (player.y > canvas.height + 50) {
                 lives--; screenShake = 12;
-                createParticle(player.x, canvas.height - 50, '#ff6b9d', 15);
-                createFloatingText(player.x, canvas.height - 80, '💔', '#ff6b9d');
+                createParticle(player.x, canvas.height - 50, '#E53935', 15);
+                createFloatingText(player.x, canvas.height - 80, '💔', '#E53935');
                 document.getElementById('lives').textContent = lives;
-                document.getElementById('hpFill').style.width = (lives / 3 * 100) + '%';
                 if (lives <= 0) gameOver(); else resetPlayer();
             }
 
@@ -748,15 +962,14 @@
                         enemy.alive = false; enemy.squashTimer = 30; player.vy = -9;
                         levelScore += 200; score += 200;
                         document.getElementById('score').textContent = score;
-                        createParticle(enemy.x + enemy.width/2, enemy.y, '#ff6b9d', 15);
-                        createFloatingText(enemy.x + enemy.width/2, enemy.y - 20, '+200', '#ffeaa7');
+                        createParticle(enemy.x + enemy.width/2, enemy.y, '#E53935', 15);
+                        createFloatingText(enemy.x + enemy.width/2, enemy.y - 20, '+200', '#FFD700');
                         screenShake = 4;
                     } else {
                         lives--; screenShake = 18;
-                        createParticle(player.x + player.width/2, player.y + player.height/2, '#ff6b9d', 20);
-                        createFloatingText(player.x, player.y - 25, '-1 ❤️', '#ff6b9d');
+                        createParticle(player.x + player.width/2, player.y + player.height/2, '#E53935', 20);
+                        createFloatingText(player.x, player.y - 25, '-1 ❤️', '#E53935');
                         document.getElementById('lives').textContent = lives;
-                        document.getElementById('hpFill').style.width = (lives / 3 * 100) + '%';
                         player.invincible = 90;
                         if (lives <= 0) gameOver();
                     }
@@ -771,8 +984,8 @@
                         levelScore += 100; score += 100;
                         document.getElementById('coins').textContent = coins;
                         document.getElementById('score').textContent = score;
-                        createParticle(coin.x + 12, coin.y + 14, '#ffeaa7', 10);
-                        createFloatingText(coin.x + 12, coin.y, '+100', '#ffeaa7');
+                        createParticle(coin.x + 12, coin.y + 14, '#FFD700', 10);
+                        createFloatingText(coin.x + 12, coin.y, '+100', '#FFD700');
                     }
                 }
             });
@@ -798,141 +1011,119 @@
             player.animTimer++;
             if (player.animTimer > 8) { player.animTimer = 0; player.frame = (player.frame + 1) % 4; }
 
-            const targetCameraX = player.x - canvas.width / 3;
-            cameraX += (targetCameraX - cameraX) * 0.1;
-            cameraX = Math.max(0, Math.min(cameraX, level.width - canvas.width));
-            if (screenShake > 0) screenShake *= 0.9;
+            if (player.x > 200) cameraX = player.x - 200;
         }
 
         function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const theme = themes[level.theme];
-            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-            gradient.addColorStop(0, theme.sky1); gradient.addColorStop(0.55, theme.sky2);
-            gradient.addColorStop(0.55, theme.ground2); gradient.addColorStop(1, theme.ground2);
-            ctx.fillStyle = gradient; ctx.fillRect(0, 0, canvas.width, canvas.height);
-
             ctx.save();
-            if (screenShake > 0.5) ctx.translate((Math.random() - 0.5) * screenShake, (Math.random() - 0.5) * screenShake);
-            ctx.translate(-cameraX, 0);
+            if (screenShake > 0) {
+                ctx.translate(Math.random() * screenShake - screenShake/2, Math.random() * screenShake - screenShake/2);
+                screenShake *= 0.9;
+            }
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             level.decorations.forEach(dec => {
-                if (dec.type === 'cloud') drawAnimeCloud(dec.x, dec.y, dec.variant);
-                else if (dec.type === 'flower') drawFlower(dec.x, dec.variant, theme);
+                if (dec.type === 'cloud') drawCloud(dec.x - cameraX, dec.y, dec.variant);
+                else if (dec.type === 'flower') drawFlower(dec.x - cameraX, dec.variant);
             });
 
             level.platforms.forEach(platform => {
-                if (platform.type === 'ground') drawAnimeGround(platform, theme);
-                else drawAnimePlatform(platform, theme);
+                if (platform.type === 'ground') drawGround(platform);
+                else drawPlatform(platform);
             });
 
-            level.movingPlatforms.forEach(mp => drawAnimePlatform(mp, theme));
+            level.movingPlatforms.forEach(mp => drawPlatform(mp));
 
             const time = Date.now() / 200;
             level.coins.forEach(coin => {
-                if (!coin.collected) drawGem(coin.x, coin.y + Math.sin(time + coin.bounceOffset) * 5, theme);
+                if (!coin.collected) drawGem(coin.x - cameraX, coin.y + Math.sin(time + coin.bounceOffset) * 5);
             });
 
             level.stars.forEach(star => {
-                if (!star.collected) drawStarGem(star.x, star.y + Math.sin(star.angle) * 8, star.angle);
+                if (!star.collected) drawStar(star.x - cameraX, star.y + Math.sin(star.angle) * 8, star.angle);
             });
 
-            level.flags.forEach(flag => drawPortal(flag, theme));
+            level.flags.forEach(flag => drawFlag(flag));
 
             level.enemies.forEach(enemy => {
-                if (enemy.alive || enemy.squashTimer > 0) drawAnimeEnemy(enemy, theme);
+                if (enemy.alive || enemy.squashTimer > 0) drawEnemy(enemy);
             });
 
-            drawAnimeCharacter();
+            drawCharacter();
             drawParticles();
             drawFloatingTexts();
 
             ctx.restore();
         }
 
-        function drawAnimeCloud(x, y, variant) {
-            const sizes = [[70, 35], [90, 45], [55, 30]];
-            const [w, h] = sizes[variant];
-            ctx.fillStyle = 'rgba(255,255,255,0.7)';
-            ctx.beginPath();
-            ctx.arc(x + w/2, y + h/2, h/2, 0, Math.PI * 2);
-            ctx.arc(x + w/4, y + h/2 + 5, h/3, 0, Math.PI * 2);
-            ctx.arc(x + w*3/4, y + h/2 + 5, h/3, 0, Math.PI * 2);
-            ctx.fill();
+        function drawGround(platform) {
+            const x = platform.x - cameraX;
+            if (x > canvas.width + 50 || x + platform.width < -50) return;
+            ctx.fillStyle = '#8B4513';
+            ctx.fillRect(x, platform.y, platform.width, platform.height);
+            ctx.fillStyle = '#228B22';
+            ctx.fillRect(x, platform.y, platform.width, 15);
         }
 
-        function drawFlower(x, variant, theme) {
-            const colors = ['#ff6b9d', '#ff8fab', '#a29bfe', '#74b9ff', '#ffeaa7'];
-            const color = colors[variant % colors.length];
-            ctx.fillStyle = '#55efc4';
-            ctx.fillRect(x + 10, 380, 6, 40);
-            ctx.fillStyle = color;
-            for (let i = 0; i < 5; i++) {
-                const angle = (i * Math.PI * 2 / 5) + Date.now() / 2000;
-                ctx.beginPath();
-                ctx.ellipse(x + 13 + Math.cos(angle) * 12, 375 + Math.sin(angle) * 12, 10, 6, angle, 0, Math.PI * 2);
-                ctx.fill();
-            }
-            ctx.fillStyle = '#ffeaa7';
-            ctx.beginPath();
-            ctx.arc(x + 13, 375, 6, 0, Math.PI * 2);
-            ctx.fill();
+        function drawPlatform(platform) {
+            const x = platform.x - cameraX;
+            if (x > canvas.width + 50 || x + platform.width < -50) return;
+            ctx.fillStyle = '#8B4513';
+            ctx.fillRect(x, platform.y, platform.width, platform.height);
+            ctx.fillStyle = '#228B22';
+            ctx.fillRect(x, platform.y, platform.width, 8);
         }
 
-        function drawAnimeGround(platform, theme) {
-            ctx.fillStyle = theme.ground1;
-            ctx.fillRect(platform.x, platform.y, platform.width, 12);
-            ctx.fillStyle = theme.ground2;
-            ctx.fillRect(platform.x, platform.y + 12, platform.width, platform.height - 12);
-            ctx.fillStyle = theme.accent;
-            for (let i = 0; i < platform.width; i += 16) {
-                ctx.beginPath();
-                ctx.moveTo(platform.x + i + 4, platform.y);
-                ctx.lineTo(platform.x + i + 8, platform.y - 8);
-                ctx.lineTo(platform.x + i + 12, platform.y);
-                ctx.fill();
-            }
-        }
-
-        function drawAnimePlatform(platform, theme) {
-            ctx.fillStyle = 'rgba(255,255,255,0.9)';
-            ctx.beginPath();
-            ctx.roundRect(platform.x, platform.y, platform.width, platform.height, 8);
-            ctx.fill();
-            ctx.fillStyle = 'rgba(255,107,157,0.2)';
-            ctx.beginPath();
-            ctx.roundRect(platform.x + 2, platform.y + 2, platform.width - 4, platform.height - 4, 6);
-            ctx.fill();
+        function drawCloud(x, y, variant) {
             ctx.fillStyle = 'rgba(255,255,255,0.8)';
-            ctx.fillRect(platform.x + 4, platform.y + 2, platform.width - 8, 4);
-            ctx.fillStyle = theme.accent;
-            ctx.globalAlpha = 0.5 + Math.sin(Date.now() / 300) * 0.3;
             ctx.beginPath();
-            ctx.arc(platform.x + platform.width - 15, platform.y + 8, 4, 0, Math.PI * 2);
+            ctx.arc(x, y, 25 + variant * 10, 0, Math.PI * 2);
+            ctx.arc(x + 30, y - 10, 30 + variant * 8, 0, Math.PI * 2);
+            ctx.arc(x + 60, y, 25 + variant * 10, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        function drawFlower(x, variant) {
+            ctx.fillStyle = ['#FF6B6B', '#FFE66D', '#4ECDC4'][variant];
+            for (let i = 0; i < 5; i++) {
+                ctx.beginPath();
+                ctx.arc(x + Math.cos(i * Math.PI * 2/5) * 8, 408 + Math.sin(i * Math.PI * 2/5) * 8, 6, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.fillStyle = '#FFE66D';
+            ctx.beginPath();
+            ctx.arc(x, 408, 5, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        function drawGem(x, y) {
+            ctx.fillStyle = '#FFD700';
+            ctx.beginPath();
+            ctx.moveTo(x, y - 12);
+            ctx.lineTo(x + 12, y);
+            ctx.lineTo(x, y + 12);
+            ctx.lineTo(x - 12, y);
+            ctx.closePath();
+            ctx.fill();
+            ctx.fillStyle = '#FFF';
+            ctx.globalAlpha = 0.5;
+            ctx.beginPath();
+            ctx.moveTo(x - 5, y - 5);
+            ctx.lineTo(x + 2, y);
+            ctx.lineTo(x - 5, y + 5);
+            ctx.closePath();
             ctx.fill();
             ctx.globalAlpha = 1;
         }
 
-        function drawGem(x, y, theme) {
+        function drawStar(x, y, angle) {
             ctx.save();
-            ctx.shadowColor = '#ffeaa7';
+            ctx.translate(x, y);
+            ctx.rotate(angle);
+            ctx.fillStyle = '#FFD700';
+            ctx.shadowColor = '#FFD700';
             ctx.shadowBlur = 20;
-            ctx.fillStyle = '#ffeaa7';
-            ctx.beginPath();
-            ctx.moveTo(x + 12, y); ctx.lineTo(x + 24, y + 10); ctx.lineTo(x + 20, y + 28); ctx.lineTo(x + 4, y + 28); ctx.lineTo(x, y + 10);
-            ctx.closePath(); ctx.fill();
-            ctx.fillStyle = '#fff'; ctx.globalAlpha = 0.7;
-            ctx.beginPath();
-            ctx.moveTo(x + 12, y + 4); ctx.lineTo(x + 18, y + 12); ctx.lineTo(x + 12, y + 18); ctx.lineTo(x + 6, y + 12);
-            ctx.closePath(); ctx.fill();
-            ctx.restore();
-        }
-
-        function drawStarGem(x, y, angle) {
-            ctx.save();
-            ctx.translate(x, y); ctx.rotate(angle);
-            ctx.shadowColor = '#a29bfe'; ctx.shadowBlur = 30;
-            ctx.fillStyle = '#a29bfe';
             ctx.beginPath();
             for (let i = 0; i < 5; i++) {
                 const outerAngle = (i * 4 * Math.PI / 5) - Math.PI/2;
@@ -940,324 +1131,111 @@
                 ctx.lineTo(Math.cos(outerAngle) * 20, Math.sin(outerAngle) * 20);
                 ctx.lineTo(Math.cos(innerAngle) * 10, Math.sin(innerAngle) * 10);
             }
-            ctx.closePath(); ctx.fill();
-            ctx.fillStyle = '#fff'; ctx.globalAlpha = 0.8;
-            ctx.beginPath(); ctx.arc(0, 0, 7, 0, Math.PI * 2); ctx.fill();
+            ctx.closePath();
+            ctx.fill();
             ctx.restore();
         }
 
-        function drawPortal(flag, theme) {
-            ctx.save();
-            const gradient = ctx.createRadialGradient(flag.x + 25, flag.y + 112, 0, flag.x + 25, flag.y + 112, 80);
-            gradient.addColorStop(0, 'rgba(162, 155, 254, 0.8)');
-            gradient.addColorStop(0.5, 'rgba(255, 107, 157, 0.4)');
-            gradient.addColorStop(1, 'transparent');
-            ctx.fillStyle = gradient;
-            ctx.fillRect(flag.x - 30, flag.y + 32, 110, 180);
-            ctx.strokeStyle = '#a29bfe'; ctx.lineWidth = 8;
-            ctx.shadowColor = '#a29bfe'; ctx.shadowBlur = 25;
+        function drawFlag(flag) {
+            const x = flag.x - cameraX;
+            ctx.fillStyle = '#8B4513';
+            ctx.fillRect(x + 10, flag.y, 8, 130);
+            ctx.fillStyle = '#E53935';
             ctx.beginPath();
-            ctx.ellipse(flag.x + 25, flag.y + 112, 45, 70, 0, 0, Math.PI * 2);
-            ctx.stroke();
-            ctx.strokeStyle = '#ff6b9d'; ctx.lineWidth = 4;
-            ctx.beginPath();
-            for (let i = 0; i < 3; i++) {
-                const startAngle = Date.now() / 500 + i * (Math.PI * 2 / 3);
-                ctx.moveTo(flag.x + 25, flag.y + 112);
-                ctx.quadraticCurveTo(flag.x + 25 + Math.cos(startAngle) * 30, flag.y + 112 + Math.sin(startAngle) * 50, flag.x + 25 + Math.cos(startAngle + 1) * 15, flag.y + 112 + Math.sin(startAngle + 1) * 25);
-            }
-            ctx.stroke();
-            ctx.fillStyle = '#fff';
-            for (let i = 0; i < 5; i++) {
-                const sparkleAngle = Date.now() / 300 + i * (Math.PI * 2 / 5);
-                const sparkleR = 30 + Math.sin(Date.now() / 200 + i) * 20;
-                ctx.beginPath();
-                ctx.arc(flag.x + 25 + Math.cos(sparkleAngle) * sparkleR, flag.y + 112 + Math.sin(sparkleAngle) * sparkleR * 1.5, 3 + Math.sin(Date.now() / 100 + i) * 2, 0, Math.PI * 2);
-                ctx.fill();
-            }
-            ctx.restore();
+            ctx.moveTo(x + 18, flag.y);
+            ctx.lineTo(x + 80, flag.y + 25);
+            ctx.lineTo(x + 18, flag.y + 50);
+            ctx.closePath();
+            ctx.fill();
         }
 
-        function drawAnimeEnemy(enemy, theme) {
+        function drawEnemy(enemy) {
+            const x = enemy.x - cameraX;
+            if (x > canvas.width + 50 || x + enemy.width < -50) return;
+            
             const squash = enemy.squashTimer > 0;
             const w = enemy.width, h = squash ? 12 : enemy.height;
-            const yOffset = squash ? enemy.height - 12 : 0;
             const bounce = Math.sin(enemy.animFrame) * 4;
-
-            ctx.save();
-            const hue = enemy.hue;
-            const bodyColor = `hsl(${hue}, 70%, 65%)`;
-            const darkColor = `hsl(${hue}, 70%, 45%)`;
-
-            if (enemy.type === 'slime') {
-                ctx.shadowColor = bodyColor; ctx.shadowBlur = 20; ctx.fillStyle = bodyColor;
+            
+            ctx.fillStyle = ['#9C27B0', '#2196F3', '#4CAF50', '#FF9800', '#F44336'][enemyTypes.indexOf(enemy.type) % 5];
+            
+            if (squash) {
                 ctx.beginPath();
-                ctx.ellipse(enemy.x + w/2, enemy.y + yOffset + h/2 - bounce, w/2, h/2 + 5, 0, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.fillStyle = 'rgba(255,255,255,0.6)';
-                ctx.beginPath();
-                ctx.ellipse(enemy.x + w/3, enemy.y + yOffset + h/3 - bounce, 6, 8, -0.3, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.fillStyle = '#fff';
-                ctx.beginPath();
-                ctx.arc(enemy.x + w/3, enemy.y + yOffset + h/2 - bounce, 6, 0, Math.PI * 2);
-                ctx.arc(enemy.x + w*2/3, enemy.y + yOffset + h/2 - bounce, 6, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.fillStyle = '#333';
-                const eyeOffset = enemy.vx > 0 ? 2 : -2;
-                ctx.beginPath();
-                ctx.arc(enemy.x + w/3 + eyeOffset, enemy.y + yOffset + h/2 - bounce, 3, 0, Math.PI * 2);
-                ctx.arc(enemy.x + w*2/3 + eyeOffset, enemy.y + yOffset + h/2 - bounce, 3, 0, Math.PI * 2);
-                ctx.fill();
-            } else if (enemy.type === 'spirit') {
-                ctx.shadowColor = '#a29bfe'; ctx.shadowBlur = 25; ctx.fillStyle = 'rgba(162, 155, 254, 0.7)';
-                ctx.beginPath();
-                ctx.arc(enemy.x + w/2, enemy.y + yOffset + h/2 - bounce, w/2, Math.PI, 0);
-                ctx.quadraticCurveTo(enemy.x + w + 5, enemy.y + yOffset + h - bounce, enemy.x + w, enemy.y + yOffset + h/2 - bounce);
-                ctx.quadraticCurveTo(enemy.x + w*2/3, enemy.y + yOffset + h + 5 - bounce, enemy.x + w/2, enemy.y + yOffset + h - bounce);
-                ctx.quadraticCurveTo(enemy.x + w/3, enemy.y + yOffset + h + 5 - bounce, enemy.x, enemy.y + yOffset + h/2 - bounce);
-                ctx.fill();
-                ctx.fillStyle = '#fff';
-                ctx.beginPath();
-                ctx.arc(enemy.x + w/3, enemy.y + yOffset + h/3 - bounce, 5, 0, Math.PI * 2);
-                ctx.arc(enemy.x + w*2/3, enemy.y + yOffset + h/3 - bounce, 5, 0, Math.PI * 2);
-                ctx.fill();
-            } else if (enemy.type === 'knight') {
-                ctx.shadowColor = '#74b9ff'; ctx.shadowBlur = 15; ctx.fillStyle = darkColor;
-                ctx.fillRect(enemy.x, enemy.y + yOffset - bounce, w, h);
-                ctx.fillStyle = '#74b9ff';
-                ctx.beginPath();
-                ctx.arc(enemy.x + w/2, enemy.y + yOffset - 5 - bounce, 14, Math.PI, 0);
-                ctx.fill();
-                ctx.fillStyle = '#333';
-                ctx.fillRect(enemy.x + 6, enemy.y + yOffset - 2 - bounce, w - 12, 8);
-                ctx.fillStyle = '#ffeaa7';
-                ctx.beginPath();
-                ctx.arc(enemy.x + 10, enemy.y + yOffset - bounce, 4, 0, Math.PI * 2);
-                ctx.arc(enemy.x + w - 10, enemy.y + yOffset - bounce, 4, 0, Math.PI * 2);
-                ctx.fill();
-            } else if (enemy.type === 'wizard') {
-                ctx.shadowColor = '#a29bfe'; ctx.shadowBlur = 20; ctx.fillStyle = darkColor;
-                ctx.beginPath();
-                ctx.moveTo(enemy.x + w/2, enemy.y + yOffset - bounce);
-                ctx.lineTo(enemy.x + w, enemy.y + h - bounce);
-                ctx.lineTo(enemy.x, enemy.y + h - bounce);
-                ctx.closePath(); ctx.fill();
-                ctx.fillStyle = bodyColor;
-                ctx.beginPath();
-                ctx.moveTo(enemy.x + w/2, enemy.y - 20 - bounce);
-                ctx.lineTo(enemy.x + w + 5, enemy.y + 10 - bounce);
-                ctx.lineTo(enemy.x - 5, enemy.y + 10 - bounce);
-                ctx.closePath(); ctx.fill();
-                ctx.fillStyle = '#ffe4d0';
-                ctx.beginPath();
-                ctx.arc(enemy.x + w/2, enemy.y + 5 - bounce, 10, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.fillStyle = '#a29bfe';
-                ctx.beginPath();
-                ctx.arc(enemy.x + w/2 - 4, enemy.y + 3 - bounce, 3, 0, Math.PI * 2);
-                ctx.arc(enemy.x + w/2 + 4, enemy.y + 3 - bounce, 3, 0, Math.PI * 2);
+                ctx.ellipse(x + w/2, enemy.y + h/2, w, h, 0, 0, Math.PI * 2);
                 ctx.fill();
             } else {
-                ctx.shadowColor = '#ff6b9d'; ctx.shadowBlur = 25; ctx.fillStyle = bodyColor;
                 ctx.beginPath();
-                ctx.ellipse(enemy.x + w/2, enemy.y + yOffset + h/2 - bounce, w/2 + 5, h/2 + 3, 0, 0, Math.PI * 2);
+                ctx.arc(x + w/2, enemy.y + h/2 - bounce, w/2, 0, Math.PI * 2);
                 ctx.fill();
-                ctx.fillStyle = darkColor;
+                
+                ctx.fillStyle = 'white';
                 ctx.beginPath();
-                ctx.moveTo(enemy.x - 5, enemy.y + yOffset + h/3 - bounce);
-                ctx.quadraticCurveTo(enemy.x - 20, enemy.y - 15 - bounce, enemy.x + 5, enemy.y + yOffset - bounce);
-                ctx.lineTo(enemy.x + w/2, enemy.y + yOffset + h/2 - bounce);
+                ctx.arc(x + w/2 - 6, enemy.y + h/2 - 8 - bounce, 5, 0, Math.PI * 2);
+                ctx.arc(x + w/2 + 6, enemy.y + h/2 - 8 - bounce, 5, 0, Math.PI * 2);
                 ctx.fill();
+                
+                ctx.fillStyle = 'black';
                 ctx.beginPath();
-                ctx.moveTo(enemy.x + w + 5, enemy.y + yOffset + h/3 - bounce);
-                ctx.quadraticCurveTo(enemy.x + w + 20, enemy.y - 15 - bounce, enemy.x + w - 5, enemy.y + yOffset - bounce);
-                ctx.lineTo(enemy.x + w/2, enemy.y + yOffset + h/2 - bounce);
-                ctx.fill();
-                ctx.fillStyle = '#ffeaa7';
-                ctx.beginPath();
-                ctx.arc(enemy.x + w/3, enemy.y + yOffset + h/3 - bounce, 5, 0, Math.PI * 2);
-                ctx.arc(enemy.x + w*2/3, enemy.y + yOffset + h/3 - bounce, 5, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.fillStyle = '#333';
-                ctx.beginPath();
-                ctx.arc(enemy.x + w/3 + (enemy.vx > 0 ? 2 : -2), enemy.y + yOffset + h/3 - bounce, 2, 0, Math.PI * 2);
-                ctx.arc(enemy.x + w*2/3 + (enemy.vx > 0 ? 2 : -2), enemy.y + yOffset + h/3 - bounce, 2, 0, Math.PI * 2);
+                ctx.arc(x + w/2 - 6, enemy.y + h/2 - 8 - bounce, 2, 0, Math.PI * 2);
+                ctx.arc(x + w/2 + 6, enemy.y + h/2 - 8 - bounce, 2, 0, Math.PI * 2);
                 ctx.fill();
             }
-            ctx.restore();
         }
 
-        function drawAnimeCharacter() {
-            if (player.invincible > 0 && Math.floor(player.invincible / 4) % 2 === 0) return;
-
-            const x = player.x, y = player.y, w = player.width, h = player.height;
-
+        function drawCharacter() {
+            const x = player.x - cameraX;
+            const y = player.y;
+            const w = player.width;
+            const h = player.height;
+            
+            if (player.invincible > 0 && Math.floor(player.invincible / 5) % 2 === 0) return;
+            
             ctx.save();
-
+            
             // Aura glow
-            const auraSize = 50 + Math.sin(player.auraPhase) * 10;
-            const gradient = ctx.createRadialGradient(x + w/2, y + h/2, 0, x + w/2, y + h/2, auraSize);
-            gradient.addColorStop(0, 'rgba(255, 107, 157, 0.4)');
-            gradient.addColorStop(0.5, 'rgba(162, 155, 254, 0.2)');
-            gradient.addColorStop(1, 'transparent');
-            ctx.fillStyle = gradient;
+            ctx.shadowColor = '#FFD700';
+            ctx.shadowBlur = 15 + Math.sin(player.auraPhase) * 5;
+            
+            // Body
+            ctx.fillStyle = '#4CAF50';
             ctx.beginPath();
-            ctx.arc(x + w/2, y + h/2, auraSize, 0, Math.PI * 2);
+            ctx.ellipse(x + w/2, y + h/2, w/2, h/2, 0, 0, Math.PI * 2);
             ctx.fill();
-
-            // Shadow
-            ctx.fillStyle = 'rgba(0,0,0,0.15)';
+            
+            // Belly
+            ctx.fillStyle = '#8BC34A';
             ctx.beginPath();
-            ctx.ellipse(x + w/2, y + h + 5, w/2 + 5, 10, 0, 0, Math.PI * 2);
+            ctx.ellipse(x + w/2, y + h/2 + 5, w/3, h/3, 0, 0, Math.PI * 2);
             ctx.fill();
-
-            // Skirt/Cape
-            ctx.fillStyle = '#ff8fab';
-            const skirtWave = Math.sin(player.auraPhase * 2) * 3;
-            ctx.beginPath();
-            if (player.direction === 1) {
-                ctx.moveTo(x + 8, y + 28);
-                ctx.quadraticCurveTo(x - 5 + skirtWave, y + h + 15, x + 10, y + h + 5);
-                ctx.lineTo(x + w - 5, y + h + 5);
-                ctx.quadraticCurveTo(x + w + 10 - skirtWave, y + h + 15, x + w - 8, y + 28);
-            } else {
-                ctx.moveTo(x + w - 8, y + 28);
-                ctx.quadraticCurveTo(x + w + 5 - skirtWave, y + h + 15, x + w - 10, y + h + 5);
-                ctx.lineTo(x + 5, y + h + 5);
-                ctx.quadraticCurveTo(x - 10 + skirtWave, y + h + 15, x + 8, y + 28);
-            }
-            ctx.fill();
-
-            // Body/Torso
-            ctx.fillStyle = '#fff';
-            ctx.beginPath();
-            ctx.moveTo(x + w/2, y + 22);
-            ctx.quadraticCurveTo(x + w - 5, y + 35, x + w/2, y + 45);
-            ctx.quadraticCurveTo(x + 5, y + 35, x + w/2, y + 22);
-            ctx.fill();
-
-            // Blouse detail
-            ctx.fillStyle = '#ffb8d0';
-            ctx.fillRect(x + w/2 - 4, y + 26, 8, 4);
-
-            // Neck
-            ctx.fillStyle = player.skinColor;
-            ctx.fillRect(x + w/2 - 4, y + 16, 8, 8);
-
-            // Head
-            ctx.fillStyle = player.skinColor;
-            ctx.beginPath();
-            ctx.arc(x + w/2, y + 12, 14, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Hair back
-            ctx.fillStyle = player.hairColor;
-            ctx.beginPath();
-            ctx.arc(x + w/2, y + 8, 16, Math.PI, 0);
-            ctx.fill();
-
-            // Hair sides
-            const hairWave = Math.sin(player.auraPhase) * 2;
-            ctx.beginPath();
-            ctx.ellipse(x + 5 + hairWave, y + 18, 8, 18, 0.2, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.ellipse(x + w - 5 - hairWave, y + 18, 8, 18, -0.2, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Hair highlight
-            ctx.fillStyle = '#6a4a3a';
-            ctx.beginPath();
-            ctx.arc(x + w/2, y + 4, 14, Math.PI + 0.3, Math.PI * 1.7);
-            ctx.fill();
-
-            // Hair accessory
-            ctx.fillStyle = '#ffeaa7';
-            ctx.beginPath();
-            ctx.arc(x + w/2 + 8, y + 2, 5, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.arc(x + w/2 + 10, y + 5, 3, 0, Math.PI * 2);
-            ctx.fill();
-
+            
             // Eyes
-            ctx.fillStyle = player.eyeColor;
+            ctx.fillStyle = 'white';
             ctx.beginPath();
-            ctx.ellipse(x + w/2 - 5, y + 12, 5, 7, 0, 0, Math.PI * 2);
+            ctx.ellipse(x + w/2 - 8, y + h/3, 8, 10, 0, 0, Math.PI * 2);
+            ctx.ellipse(x + w/2 + 8, y + h/3, 8, 10, 0, 0, Math.PI * 2);
             ctx.fill();
+            
+            // Pupils
+            ctx.fillStyle = 'black';
             ctx.beginPath();
-            ctx.ellipse(x + w/2 + 5, y + 12, 5, 7, 0, 0, Math.PI * 2);
+            ctx.arc(x + w/2 - 6 + player.direction * 2, y + h/3 + 2, 4, 0, Math.PI * 2);
+            ctx.arc(x + w/2 + 10 + player.direction * 2, y + h/3 + 2, 4, 0, Math.PI * 2);
             ctx.fill();
-
-            // Eye highlights
-            ctx.fillStyle = '#fff';
+            
+            // Eyebrows
+            ctx.fillStyle = '#2E7D32';
+            ctx.fillRect(x + w/2 - 14, y + h/4 - 5, 12, 4);
+            ctx.fillRect(x + w/2 + 2, y + h/4 - 5, 12, 4);
+            
+            // Beak
+            ctx.fillStyle = '#FF9800';
             ctx.beginPath();
-            ctx.arc(x + w/2 - 4, y + 10, 2.5, 0, Math.PI * 2);
+            ctx.moveTo(x + w/2, y + h/2);
+            ctx.lineTo(x + w/2 + 12, y + h/2 + 8);
+            ctx.lineTo(x + w/2, y + h/2 + 15);
+            ctx.closePath();
             ctx.fill();
-            ctx.beginPath();
-            ctx.arc(x + w/2 + 6, y + 10, 2.5, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Small highlight
-            ctx.beginPath();
-            ctx.arc(x + w/2 - 6, y + 14, 1.5, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.arc(x + w/2 + 4, y + 14, 1.5, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Blush
-            ctx.fillStyle = 'rgba(255, 150, 180, 0.4)';
-            ctx.beginPath();
-            ctx.ellipse(x + w/2 - 8, y + 16, 4, 2, 0, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.ellipse(x + w/2 + 8, y + 16, 4, 2, 0, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Mouth
-            ctx.fillStyle = '#ff9999';
-            ctx.beginPath();
-            ctx.arc(x + w/2, y + 19, 3, 0, Math.PI);
-            ctx.fill();
-
-            // Legs
-            const legOffset = player.state === 'walk' ? (player.frame % 2 === 0 ? 6 : -6) : 0;
-            ctx.fillStyle = player.skinColor;
-            ctx.beginPath();
-            ctx.ellipse(x + 14 + legOffset, y + 56, 6, 10, 0.1, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.ellipse(x + w - 14 - legOffset, y + 56, 6, 10, -0.1, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Shoes
-            ctx.fillStyle = '#ff6b9d';
-            ctx.beginPath();
-            ctx.ellipse(x + 14 + legOffset, y + 63, 7, 4, 0, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.ellipse(x + w - 14 - legOffset, y + 63, 7, 4, 0, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Magical effect when jumping
-            if (!player.grounded) {
-                ctx.fillStyle = 'rgba(162, 155, 254, 0.6)';
-                ctx.beginPath();
-                ctx.moveTo(x + w/2 - 15, y + h);
-                ctx.lineTo(x + w/2, y + h + 25);
-                ctx.lineTo(x + w/2 + 15, y + h);
-                ctx.fill();
-                ctx.fillStyle = '#ffeaa7';
-                for (let i = 0; i < 3; i++) {
-                    const sparkleY = y + h + 10 + Math.sin(Date.now() / 100 + i) * 8;
-                    ctx.beginPath();
-                    ctx.arc(x + w/2 - 8 + i * 8, sparkleY, 3, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-            }
-
+            
             ctx.restore();
         }
 
@@ -1266,10 +1244,14 @@
             container.innerHTML = '';
             for (let i = 1; i <= totalLevels; i++) {
                 const btn = document.createElement('button');
-                btn.className = 'level-btn';
+                btn.className = 'level-btn red';
                 btn.textContent = i;
-                if (completedLevels.includes(i)) { btn.classList.add('completed'); btn.textContent = '✓'; }
-                if (!unlockedLevels.includes(i)) { btn.disabled = true; btn.textContent = '🔒'; }
+                if (completedLevels.includes(i)) { 
+                    btn.classList.add('completed'); 
+                    btn.classList.remove('red');
+                    btn.classList.add('green');
+                }
+                if (!unlockedLevels.includes(i)) { btn.disabled = true; }
                 btn.onclick = () => { if (unlockedLevels.includes(i)) startGame(i); };
                 container.appendChild(btn);
             }
@@ -1294,8 +1276,6 @@
             document.getElementById('score').textContent = score;
             document.getElementById('coins').textContent = coins;
             document.getElementById('lives').textContent = lives;
-            document.getElementById('hpFill').style.width = '100%';
-            document.getElementById('spFill').style.width = '100%';
         }
 
         function levelComplete() {
@@ -1308,7 +1288,16 @@
             document.getElementById('levelScore').textContent = levelScore;
             document.getElementById('levelCoins').textContent = levelCoins;
             document.getElementById('levelTime').textContent = timeTaken + 's';
-            document.getElementById('levelStars').textContent = stars;
+            
+            const starsEl = document.getElementById('levelStars');
+            starsEl.innerHTML = '';
+            for (let i = 0; i < 3; i++) {
+                const starSpan = document.createElement('span');
+                starSpan.className = i < stars.length ? 'star' : 'star empty';
+                starSpan.textContent = '⭐';
+                starsEl.appendChild(starSpan);
+            }
+            
             if (!completedLevels.includes(currentLevel)) {
                 completedLevels.push(currentLevel);
                 localStorage.setItem('completedLevels', JSON.stringify(completedLevels));
@@ -1321,8 +1310,8 @@
             if (currentLevel >= totalLevels) winGame();
             else document.getElementById('levelCompleteScreen').classList.remove('hidden');
             document.getElementById('levelIndicator').classList.add('hidden');
-            createParticle(player.x, player.y, '#ff6b9d', 50);
-            createFloatingText(player.x + player.width/2, player.y - 30, '✨ COMPLETE! ✨', '#55efc4');
+            createParticle(player.x, player.y, '#FFD700', 50);
+            createFloatingText(player.x + player.width/2, player.y - 30, '🎉 LEVEL CLEAR! 🎉', '#FFD700');
         }
 
         function nextLevel() {
@@ -1339,6 +1328,7 @@
         }
 
         function winGame() {
+            document.getElementById('levelCompleteScreen').classList.add('hidden');
             document.getElementById('winScore').textContent = score;
             document.getElementById('winCoins').textContent = coins;
             document.getElementById('winTime').textContent = totalTime + 's';
@@ -1351,6 +1341,7 @@
             document.getElementById('gameOverScreen').classList.add('hidden');
             document.getElementById('levelCompleteScreen').classList.add('hidden');
             document.getElementById('winScreen').classList.add('hidden');
+            document.getElementById('levelIndicator').classList.add('hidden');
             document.getElementById('startScreen').classList.remove('hidden');
             score = 0; coins = 0; totalTime = 0; updateLevelSelect();
         }
