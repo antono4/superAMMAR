@@ -754,6 +754,8 @@
             rainbow: { sky1: '#ffecd2', sky2: '#fcb69f', ground1: '#a18cd1', ground2: '#fbc2eb', accent: '#fad0c4', name: 'Dreamland' }
         };
 
+        const enemyTypes = ['slime', 'spirit', 'knight', 'wizard', 'dragon'];
+
         function generateLevel(levelNum) {
             level.platforms = []; level.enemies = []; level.coins = [];
             level.flags = []; level.decorations = []; level.stars = []; level.movingPlatforms = [];
@@ -807,7 +809,6 @@
                 }
             }
 
-            const enemyTypes = ['slime', 'spirit', 'knight', 'wizard', 'dragon'];
             const enemyCount = 4 + levelNum;
             for (let i = 0; i < enemyCount; i++) {
                 const x = 200 + i * (level.width / enemyCount);
@@ -920,11 +921,16 @@
 
             level.platforms.forEach(platform => {
                 if (rectCollision(player, platform)) {
-                    if (player.vy > 0 && player.y + player.height - player.vy <= platform.y + 5) {
+                    // Check if player is above platform (landing)
+                    if (player.y + player.height <= platform.y + 10 && player.vy >= 0) {
                         player.y = platform.y - player.height; player.vy = 0; player.grounded = true;
-                    } else if (player.vy < 0 && player.y - player.vy >= platform.y + platform.height) {
+                    } 
+                    // Check if player is below platform (hitting head)
+                    else if (player.y >= platform.y + platform.height - 10 && player.vy < 0) {
                         player.y = platform.y + platform.height; player.vy = 0;
-                    } else {
+                    }
+                    // Side collision
+                    else {
                         if (player.vx > 0) player.x = platform.x - player.width;
                         else if (player.vx < 0) player.x = platform.x + platform.width;
                     }
@@ -935,7 +941,7 @@
                 mp.x += mp.speed * mp.direction;
                 if (mp.x <= mp.startX || mp.x >= mp.endX) mp.direction *= -1;
                 if (rectCollision(player, mp)) {
-                    if (player.vy > 0 && player.y + player.height - player.vy <= mp.y + 5) {
+                    if (player.y + player.height <= mp.y + 10 && player.vy >= 0) {
                         player.y = mp.y - player.height; player.vy = 0; player.grounded = true; player.x += mp.speed * mp.direction;
                     }
                 }
