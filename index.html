@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hero Clash - Mobile Legends Style</title>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <title>Ragnarok Quest - Fantasy Adventure</title>
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,17 +13,18 @@
         }
 
         body {
-            background: linear-gradient(135deg, #1a0a2e 0%, #2d1b4e 30%, #16082a 100%);
+            background: 
+                linear-gradient(180deg, #2c1810 0%, #1a0f0a 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-family: 'Rajdhani', sans-serif;
+            font-family: 'MedievalSharp', cursive;
             overflow: hidden;
         }
 
-        /* Animated background particles */
+        /* Parchment texture overlay */
         body::before {
             content: '';
             position: fixed;
@@ -32,199 +33,251 @@
             right: 0;
             bottom: 0;
             background: 
-                radial-gradient(circle at 20% 80%, rgba(120, 80, 200, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 100, 150, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, rgba(100, 200, 255, 0.2) 0%, transparent 70%);
-            animation: bgPulse 4s ease-in-out infinite alternate;
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100" height="100" filter="url(%23n)" opacity="0.05"/></svg>');
             pointer-events: none;
         }
 
-        @keyframes bgPulse {
-            from { opacity: 0.5; }
-            to { opacity: 1; }
+        /* Decorative corner ornaments */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse at 0% 0%, rgba(139, 69, 19, 0.3) 0%, transparent 30%),
+                radial-gradient(ellipse at 100% 0%, rgba(139, 69, 19, 0.3) 0%, transparent 30%),
+                radial-gradient(ellipse at 0% 100%, rgba(139, 69, 19, 0.3) 0%, transparent 30%),
+                radial-gradient(ellipse at 100% 100%, rgba(139, 69, 19, 0.3) 0%, transparent 30%);
+            pointer-events: none;
         }
 
         #gameContainer {
             position: relative;
-            border-radius: 20px;
+            border: 8px solid #8b4513;
+            border-radius: 0;
             overflow: hidden;
             box-shadow: 
-                0 0 0 4px #ffd700,
-                0 0 0 8px #ff6b00,
-                0 0 40px rgba(255, 107, 0, 0.6),
-                0 0 80px rgba(255, 215, 0, 0.4),
-                inset 0 0 60px rgba(0, 0, 0, 0.5);
+                0 0 0 4px #5d3a1a,
+                0 0 0 8px #8b4513,
+                0 0 30px rgba(0, 0, 0, 0.8),
+                inset 0 0 50px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Ornate corner decorations */
+        #gameContainer::before,
+        #gameContainer::after {
+            content: '❧';
+            position: absolute;
+            font-size: 40px;
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            z-index: 10;
+        }
+
+        #gameContainer::before {
+            top: -5px;
+            left: -5px;
+        }
+
+        #gameContainer::after {
+            top: -5px;
+            right: -5px;
+            transform: scaleX(-1);
         }
 
         #gameCanvas {
             display: block;
         }
 
-        /* ML-Style HUD */
+        /* Ragnarok Style HUD */
         #ui {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            padding: 15px 20px;
+            padding: 12px 20px;
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            background: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 60%, transparent 100%);
+            align-items: center;
+            background: linear-gradient(180deg, rgba(20, 10, 5, 0.95) 0%, rgba(20, 10, 5, 0.7) 70%, transparent 100%);
         }
 
-        .hero-info {
+        .ragna-panel {
+            background: linear-gradient(145deg, #3d2817, #2c1810);
+            border: 3px solid #8b4513;
+            border-radius: 0;
+            padding: 8px 15px;
+            position: relative;
+        }
+
+        .ragna-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #ffd700, transparent);
+        }
+
+        .ragna-panel::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #8b4513, transparent);
+        }
+
+        .char-info {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 15px;
         }
 
-        .hero-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            border: 3px solid #ffd700;
-            background: linear-gradient(145deg, #ff6b00, #ff4500);
+        .char-portrait {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(145deg, #2c1810, #1a0f0a);
+            border: 4px solid #8b4513;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            box-shadow: 0 0 20px rgba(255, 107, 0, 0.6);
+            font-size: 32px;
             position: relative;
         }
 
-        .hero-avatar::after {
+        .char-portrait::before {
             content: '';
             position: absolute;
-            inset: -3px;
-            border-radius: 14px;
-            background: linear-gradient(45deg, #ffd700, #ff6b00, #ffd700);
-            z-index: -1;
-            animation: avatarGlow 2s linear infinite;
+            inset: -2px;
+            border: 2px solid #ffd700;
         }
 
-        @keyframes avatarGlow {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
-
-        .hero-stats {
+        .char-stats {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 6px;
         }
 
-        .hp-bar {
-            width: 120px;
-            height: 12px;
-            background: #1a1a2e;
-            border-radius: 6px;
-            border: 2px solid #333;
-            overflow: hidden;
+        .stat-bar-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stat-label {
+            color: #ffd700;
+            font-size: 12px;
+            width: 50px;
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        .stat-bar {
+            width: 100px;
+            height: 14px;
+            background: #1a0f0a;
+            border: 2px solid #8b4513;
             position: relative;
+            overflow: hidden;
         }
 
-        .hp-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #ff4444, #ff6b6b);
-            border-radius: 4px;
-            transition: width 0.3s;
-            box-shadow: 0 0 10px rgba(255, 68, 68, 0.8);
-        }
-
-        .hp-fill::after {
+        .stat-bar::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             height: 50%;
-            background: linear-gradient(180deg, rgba(255,255,255,0.3), transparent);
+            background: linear-gradient(180deg, rgba(255,255,255,0.1), transparent);
         }
 
-        .stat-row {
-            display: flex;
-            gap: 15px;
-        }
-
-        .stat-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 12px;
-            background: linear-gradient(145deg, rgba(255,215,0,0.2), rgba(255,107,0,0.1));
-            border-radius: 20px;
-            border: 2px solid rgba(255, 215, 0, 0.5);
-        }
-
-        .stat-icon {
-            font-size: 18px;
-            filter: drop-shadow(0 0 5px currentColor);
-        }
-
-        .stat-value {
-            color: #ffd700;
-            font-size: 16px;
-            font-weight: 700;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-        }
-
-        .skill-bar {
-            display: flex;
-            gap: 8px;
-            margin-top: 5px;
-        }
-
-        .skill-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            background: linear-gradient(145deg, #2d1b4e, #1a0a2e);
-            border: 2px solid #8b5cf6;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
+        .hp-bar-fill {
+            height: 100%;
+            background: linear-gradient(180deg, #ff4444 0%, #8b0000 100%);
+            transition: width 0.3s;
             position: relative;
         }
 
-        .skill-icon::before {
+        .hp-bar-fill::after {
             content: '';
             position: absolute;
-            inset: -4px;
-            border-radius: 12px;
-            background: linear-gradient(45deg, #8b5cf6, #ff6b00);
-            z-index: -1;
-            opacity: 0.5;
+            top: 0;
+            right: 0;
+            width: 3px;
+            height: 100%;
+            background: rgba(255,255,255,0.5);
         }
 
-        .skill-cd {
-            position: absolute;
-            bottom: -2px;
-            right: -2px;
-            background: #ff4444;
-            color: white;
-            font-size: 10px;
-            padding: 2px 5px;
-            border-radius: 8px;
-            font-weight: bold;
+        .sp-bar-fill {
+            height: 100%;
+            background: linear-gradient(180deg, #4488ff 0%, #0044aa 100%);
+            transition: width 0.3s;
+        }
+
+        .stat-icon-text {
+            color: #ffd700;
+            font-size: 14px;
+            min-width: 25px;
+            text-align: center;
+        }
+
+        .stat-value-text {
+            color: #fff;
+            font-size: 14px;
+            text-shadow: 1px 1px 2px #000;
+            min-width: 40px;
+        }
+
+        .base-stats {
+            display: flex;
+            gap: 15px;
+            margin-top: 4px;
+        }
+
+        .base-stat {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 8px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid #5d3a1a;
+        }
+
+        .base-stat-icon {
+            font-size: 12px;
+        }
+
+        .base-stat-value {
+            color: #ffd700;
+            font-size: 12px;
+        }
+
+        .job-level {
+            background: linear-gradient(145deg, #4a0080, #2c0050);
+            border: 2px solid #9933ff;
+            padding: 4px 12px;
+            color: #fff;
+            font-size: 14px;
+            text-shadow: 0 0 10px #9933ff;
         }
 
         #levelIndicator {
             position: absolute;
-            top: 80px;
+            top: 75px;
             left: 50%;
             transform: translateX(-50%);
-            background: linear-gradient(145deg, #8b5cf6, #6d28d9);
-            padding: 10px 40px;
-            border-radius: 25px;
+            background: linear-gradient(145deg, #3d2817, #2c1810);
+            padding: 8px 30px;
             border: 3px solid #ffd700;
-            color: white;
+            border-radius: 0;
+            color: #ffd700;
             font-size: 18px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            box-shadow: 0 0 30px rgba(139, 92, 246, 0.8), 0 4px 20px rgba(0,0,0,0.5);
+            text-shadow: 2px 2px 4px #000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.8);
             z-index: 10;
         }
 
@@ -243,171 +296,166 @@
 
         #startScreen {
             background: 
-                linear-gradient(135deg, rgba(26, 10, 46, 0.98), rgba(45, 27, 78, 0.98)),
-                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,215,0,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+                linear-gradient(135deg, rgba(60, 30, 15, 0.98), rgba(40, 20, 10, 0.98)),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><filter id="p"><feTurbulence type="fractalNoise" baseFrequency="0.5" numOctaves="3"/></filter><pattern id="parchment" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="rgba(139,69,19,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23parchment)"/></svg>');
         }
 
         #gameOverScreen {
-            background: linear-gradient(135deg, rgba(127, 29, 29, 0.98), rgba(185, 28, 28, 0.98));
+            background: linear-gradient(135deg, rgba(80, 10, 10, 0.98), rgba(40, 5, 5, 0.98));
         }
 
         #levelCompleteScreen {
-            background: linear-gradient(135deg, rgba(5, 150, 105, 0.98), rgba(16, 185, 129, 0.98));
+            background: linear-gradient(135deg, rgba(20, 60, 20, 0.98), rgba(10, 40, 10, 0.98));
         }
 
         #winScreen {
-            background: 
-                linear-gradient(135deg, rgba(255, 215, 0, 0.98), rgba(245, 158, 11, 0.98)),
-                repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 20px);
+            background: linear-gradient(135deg, rgba(100, 80, 20, 0.98), rgba(60, 40, 10, 0.98));
         }
 
         .screen-title {
-            font-size: 48px;
-            font-weight: 700;
+            font-size: 42px;
             margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-        }
-
-        .title-gold { 
-            color: #ffd700; 
+            color: #ffd700;
             text-shadow: 
-                0 0 30px rgba(255, 215, 0, 0.8),
-                0 4px 0 #b8860b,
-                0 8px 20px rgba(0,0,0,0.5);
+                3px 3px 0 #8b4513,
+                0 0 20px rgba(255, 215, 0, 0.5),
+                5px 5px 10px rgba(0,0,0,0.8);
+            letter-spacing: 3px;
         }
 
-        .title-red { 
-            color: #ff6b6b; 
-            text-shadow: 
-                0 0 30px rgba(255, 107, 107, 0.8),
-                0 4px 0 #991b1b,
-                0 8px 20px rgba(0,0,0,0.5);
+        .ragna-subtitle {
+            font-size: 18px;
+            margin-bottom: 25px;
+            color: #d4a574;
+            text-shadow: 1px 1px 3px #000;
+            font-style: italic;
         }
 
-        .title-green { 
-            color: #4ade80; 
-            text-shadow: 
-                0 0 30px rgba(74, 222, 128, 0.8),
-                0 4px 0 #166534,
-                0 8px 20px rgba(0,0,0,0.5);
-        }
-
-        .subtitle {
-            font-size: 20px;
-            margin-bottom: 30px;
-            color: #e2e8f0;
-            letter-spacing: 2px;
-        }
-
-        .hero-card {
-            background: linear-gradient(145deg, rgba(139, 92, 246, 0.3), rgba(99, 102, 241, 0.2));
-            border: 3px solid #ffd700;
-            border-radius: 20px;
+        /* Medieval scroll decoration */
+        .scroll-frame {
+            background: linear-gradient(145deg, #d4a574, #c49a6c);
+            border: 4px solid #8b4513;
             padding: 30px 50px;
             margin: 20px 0;
-            box-shadow: 0 0 40px rgba(255, 215, 0, 0.3);
+            position: relative;
+            box-shadow: 
+                inset 0 0 30px rgba(139, 69, 19, 0.3),
+                0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .hero-name {
-            font-size: 36px;
-            font-weight: 700;
-            color: #ffd700;
-            text-transform: uppercase;
+        .scroll-frame::before,
+        .scroll-frame::after {
+            content: '◆';
+            position: absolute;
+            top: 10px;
+            font-size: 20px;
+            color: #8b4513;
+        }
+
+        .scroll-frame::before { left: 15px; }
+        .scroll-frame::after { right: 15px; }
+
+        .scroll-title {
+            font-size: 32px;
+            color: #3d2817;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
             margin-bottom: 10px;
         }
 
-        .hero-role {
-            font-size: 16px;
-            color: #a78bfa;
-            letter-spacing: 3px;
+        .scroll-subtitle {
+            font-size: 14px;
+            color: #5d3a1a;
+            letter-spacing: 4px;
+            text-transform: uppercase;
         }
 
         .btn {
-            padding: 18px 50px;
-            font-family: 'Rajdhani', sans-serif;
+            padding: 15px 45px;
+            font-family: 'MedievalSharp', cursive;
             font-size: 20px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            background: linear-gradient(145deg, #ffd700, #ff8c00);
-            color: #1a0a2e;
-            border: none;
-            border-radius: 30px;
+            background: linear-gradient(180deg, #ffd700 0%, #daa520 50%, #b8860b 100%);
+            color: #3d2817;
+            border: 4px solid #8b4513;
             cursor: pointer;
-            margin: 10px;
+            margin: 12px;
             transition: all 0.3s ease;
-            box-shadow: 
-                0 6px 0 #b8860b,
-                0 10px 30px rgba(255, 215, 0, 0.4);
             position: relative;
-            overflow: hidden;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: left 0.5s;
-        }
-
-        .btn:hover::before {
-            left: 100%;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.3);
+            box-shadow: 
+                0 6px 0 #5d3a1a,
+                0 8px 20px rgba(0,0,0,0.5),
+                inset 0 2px 0 rgba(255,255,255,0.3);
         }
 
         .btn:hover {
-            transform: translateY(-4px);
+            background: linear-gradient(180deg, #ffec8b 0%, #ffd700 50%, #daa520 100%);
+            transform: translateY(-3px);
             box-shadow: 
-                0 10px 0 #b8860b,
-                0 15px 40px rgba(255, 215, 0, 0.6);
+                0 9px 0 #5d3a1a,
+                0 12px 30px rgba(0,0,0,0.6),
+                inset 0 2px 0 rgba(255,255,255,0.4);
         }
 
         .btn:active {
             transform: translateY(2px);
             box-shadow: 
-                0 4px 0 #b8860b,
-                0 6px 20px rgba(255, 215, 0, 0.4);
+                0 3px 0 #5d3a1a,
+                0 5px 15px rgba(0,0,0,0.4),
+                inset 0 2px 0 rgba(255,255,255,0.2);
+        }
+
+        .btn-brown {
+            background: linear-gradient(180deg, #8b4513 0%, #6b3410 50%, #5d3a1a 100%);
+            color: #ffd700;
+            border-color: #3d2817;
+            box-shadow: 
+                0 6px 0 #3d2817,
+                0 8px 20px rgba(0,0,0,0.5),
+                inset 0 2px 0 rgba(255,255,255,0.1);
+        }
+
+        .btn-brown:hover {
+            background: linear-gradient(180deg, #a0522d 0%, #8b4513 50%, #6b3410 100%);
         }
 
         .btn-purple {
-            background: linear-gradient(145deg, #8b5cf6, #6d28d9);
-            box-shadow: 0 6px 0 #5b21b6, 0 10px 30px rgba(139, 92, 246, 0.4);
-            color: white;
+            background: linear-gradient(180deg, #6b238e 0%, #4a1a6b 50%, #3d1463 100%);
+            color: #fff;
+            border-color: #9933ff;
+            text-shadow: 0 0 10px #9933ff;
+            box-shadow: 
+                0 6px 0 #2d0f4a,
+                0 8px 20px rgba(153, 51, 255, 0.3),
+                inset 0 2px 0 rgba(255,255,255,0.2);
         }
 
         .btn-purple:hover {
-            box-shadow: 0 10px 0 #5b21b6, 0 15px 40px rgba(139, 92, 246, 0.6);
-        }
-
-        .btn-purple:active {
-            box-shadow: 0 4px 0 #5b21b6, 0 6px 20px rgba(139, 92, 246, 0.4);
+            background: linear-gradient(180deg, #9933ff 0%, #6b238e 50%, #4a1a6b 100%);
+            box-shadow: 
+                0 9px 0 #2d0f4a,
+                0 12px 30px rgba(153, 51, 255, 0.5),
+                inset 0 2px 0 rgba(255,255,255,0.3);
         }
 
         .level-select {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
+            gap: 10px;
             margin: 20px 0;
         }
 
         .level-btn {
-            width: 70px;
-            height: 70px;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 24px;
-            font-weight: 700;
-            background: linear-gradient(145deg, #2d1b4e, #1a0a2e);
+            width: 65px;
+            height: 65px;
+            font-family: 'MedievalSharp', cursive;
+            font-size: 22px;
+            background: linear-gradient(145deg, #3d2817, #2c1810);
             color: #ffd700;
-            border: 3px solid #6d28d9;
-            border-radius: 15px;
+            border: 3px solid #8b4513;
             cursor: pointer;
             transition: all 0.2s;
             position: relative;
-            overflow: hidden;
+            text-shadow: 1px 1px 3px #000;
         }
 
         .level-btn::before {
@@ -418,55 +466,52 @@
             right: 0;
             height: 50%;
             background: linear-gradient(180deg, rgba(255,255,255,0.1), transparent);
-            pointer-events: none;
         }
 
         .level-btn:hover:not(:disabled) {
-            background: linear-gradient(145deg, #8b5cf6, #6d28d9);
+            background: linear-gradient(145deg, #5d3a1a, #4a2a15);
             border-color: #ffd700;
-            transform: scale(1.1);
-            box-shadow: 0 0 30px rgba(139, 92, 246, 0.6);
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
         }
 
         .level-btn:disabled {
             opacity: 0.4;
             cursor: not-allowed;
+            color: #8b4513;
         }
 
         .level-btn.completed {
-            background: linear-gradient(145deg, #059669, #10b981);
-            border-color: #34d399;
-            box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+            background: linear-gradient(145deg, #2d5a2d, #1a3d1a);
+            border-color: #4a8a4a;
         }
 
         .progress-container {
-            width: 350px;
-            margin: 20px 0;
+            width: 320px;
+            margin: 15px 0;
         }
 
         .progress-label {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 14px;
-            color: #a78bfa;
+            margin-bottom: 6px;
+            font-size: 12px;
+            color: #d4a574;
             text-transform: uppercase;
             letter-spacing: 2px;
         }
 
         .progress-bar {
-            height: 16px;
-            background: #1a0a2e;
-            border-radius: 10px;
-            border: 3px solid #6d28d9;
+            height: 18px;
+            background: linear-gradient(145deg, #1a0f0a, #2c1810);
+            border: 3px solid #8b4513;
             overflow: hidden;
             position: relative;
         }
 
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #8b5cf6, #a78bfa, #ffd700);
-            border-radius: 8px;
+            background: linear-gradient(90deg, #8b4513, #daa520, #ffd700);
             transition: width 0.5s ease;
             position: relative;
         }
@@ -478,46 +523,44 @@
             left: 0;
             right: 0;
             height: 50%;
-            background: linear-gradient(180deg, rgba(255,255,255,0.3), transparent);
+            background: linear-gradient(180deg, rgba(255,255,255,0.2), transparent);
         }
 
         .instructions {
-            font-size: 14px;
-            color: #94a3b8;
-            margin: 20px 0;
+            font-size: 13px;
+            color: #c49a6c;
+            margin: 15px 0;
             line-height: 2;
         }
 
         .key {
             display: inline-block;
-            background: linear-gradient(145deg, #2d1b4e, #1a0a2e);
-            padding: 8px 16px;
-            border-radius: 8px;
-            margin: 0 5px;
-            border: 2px solid #8b5cf6;
+            background: linear-gradient(145deg, #3d2817, #2c1810);
+            padding: 6px 14px;
+            margin: 0 4px;
+            border: 2px solid #8b4513;
             color: #ffd700;
-            font-weight: bold;
+            font-size: 12px;
         }
 
         #mobileControls {
             display: none;
             position: fixed;
-            bottom: 20px;
+            bottom: 25px;
             left: 0;
             right: 0;
-            padding: 0 20px;
+            padding: 0 25px;
             justify-content: space-between;
             z-index: 50;
         }
 
         .mobile-btn {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: linear-gradient(145deg, rgba(139, 92, 246, 0.5), rgba(99, 102, 241, 0.3));
-            border: 4px solid rgba(255, 215, 0, 0.8);
-            color: white;
-            font-size: 32px;
+            width: 75px;
+            height: 75px;
+            background: linear-gradient(145deg, #3d2817, #2c1810);
+            border: 4px solid #8b4513;
+            color: #ffd700;
+            font-size: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -525,45 +568,19 @@
             user-select: none;
             -webkit-user-select: none;
             touch-action: manipulation;
-            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
             transition: all 0.2s;
-            box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
         }
 
         .mobile-btn:active {
-            transform: scale(0.9);
-            background: linear-gradient(145deg, rgba(255, 215, 0, 0.5), rgba(255, 107, 0, 0.3));
+            transform: scale(0.95);
+            background: linear-gradient(145deg, #5d3a1a, #4a2a15);
         }
 
         .control-group {
             display: flex;
-            gap: 15px;
+            gap: 12px;
         }
-
-        .skill-dpad {
-            width: 140px;
-            height: 140px;
-            position: relative;
-        }
-
-        .dpad-btn {
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(145deg, rgba(139, 92, 246, 0.6), rgba(99, 102, 241, 0.4));
-            border: 3px solid rgba(255, 215, 0, 0.6);
-            border-radius: 12px;
-            color: white;
-            font-size: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .dpad-up { top: 0; left: 50%; transform: translateX(-50%); }
-        .dpad-down { bottom: 0; left: 50%; transform: translateX(-50%); }
-        .dpad-left { left: 0; top: 50%; transform: translateY(-50%); }
-        .dpad-right { right: 0; top: 50%; transform: translateY(-50%); }
 
         @media (max-width: 850px) {
             #mobileControls {
@@ -575,7 +592,7 @@
             }
             
             .screen-title {
-                font-size: 32px;
+                font-size: 28px;
             }
             
             .level-select {
@@ -588,65 +605,75 @@
         }
 
         .stars {
-            font-size: 40px;
-            margin: 20px 0;
-            letter-spacing: 10px;
+            font-size: 36px;
+            margin: 15px 0;
+            letter-spacing: 8px;
         }
 
         .stat-row-display {
             display: flex;
             justify-content: center;
-            gap: 40px;
-            margin: 20px 0;
+            gap: 30px;
+            margin: 15px 0;
         }
 
         .stat-box {
             text-align: center;
-            padding: 15px 25px;
-            background: linear-gradient(145deg, rgba(0,0,0,0.3), rgba(0,0,0,0.2));
-            border-radius: 15px;
-            border: 2px solid rgba(255, 215, 0, 0.5);
+            padding: 12px 20px;
+            background: linear-gradient(145deg, rgba(60, 30, 15, 0.8), rgba(40, 20, 10, 0.8));
+            border: 3px solid #8b4513;
         }
 
         .stat-box-value {
-            font-size: 32px;
-            font-weight: 700;
+            font-size: 28px;
             color: #ffd700;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            text-shadow: 2px 2px 4px #000;
         }
 
         .stat-box-label {
-            font-size: 12px;
-            color: #a78bfa;
+            font-size: 11px;
+            color: #d4a574;
             text-transform: uppercase;
             letter-spacing: 2px;
-            margin-top: 5px;
+            margin-top: 4px;
         }
 
-        /* Victory animation */
         @keyframes victoryPulse {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            50% { transform: scale(1.05); }
         }
 
         .victory-effect {
-            animation: victoryPulse 0.5s ease-in-out infinite;
+            animation: victoryPulse 0.6s ease-in-out infinite;
         }
 
-        /* Kill effect text */
-        .kill-text {
+        /* Damage number floating */
+        .dmg-number {
             position: absolute;
-            font-size: 24px;
-            font-weight: 700;
+            font-size: 20px;
             color: #ffd700;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 2px 2px 4px rgba(0,0,0,0.8);
+            text-shadow: 2px 2px 4px #000, 0 0 10px rgba(255, 215, 0, 0.5);
             pointer-events: none;
-            animation: killFloat 1s ease-out forwards;
+            animation: dmgFloat 1s ease-out forwards;
         }
 
-        @keyframes killFloat {
+        @keyframes dmgFloat {
             0% { opacity: 1; transform: translateY(0) scale(1); }
-            100% { opacity: 0; transform: translateY(-50px) scale(1.5); }
+            100% { opacity: 0; transform: translateY(-40px) scale(1.3); }
+        }
+
+        /* Quest complete banner */
+        .quest-banner {
+            background: linear-gradient(90deg, transparent, #ffd700, transparent);
+            padding: 8px 0;
+            margin: 10px 0;
+        }
+
+        .quest-banner-text {
+            color: #3d2817;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
         }
     </style>
 </head>
@@ -654,52 +681,55 @@
     <div id="gameContainer">
         <canvas id="gameCanvas" width="800" height="480"></canvas>
         
-        <!-- ML-Style HUD -->
+        <!-- Ragnarok Style HUD -->
         <div id="ui">
-            <div class="hero-info">
-                <div class="hero-avatar">⚔️</div>
-                <div class="hero-stats">
-                    <div class="hp-bar">
-                        <div class="hp-fill" id="hpFill" style="width: 100%"></div>
-                    </div>
-                    <div class="stat-row">
-                        <div class="stat-item">
-                            <span class="stat-icon" style="color: #ffd700;">🪙</span>
-                            <span class="stat-value" id="coins">0</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-icon" style="color: #ff6b6b;">⭐</span>
-                            <span class="stat-value" id="score">0</span>
+            <div class="char-info">
+                <div class="char-portrait">⚔️</div>
+                <div class="char-stats">
+                    <div class="stat-bar-container">
+                        <span class="stat-label">HP</span>
+                        <div class="stat-bar">
+                            <div class="hp-bar-fill" id="hpFill" style="width: 100%"></div>
                         </div>
                     </div>
-                    <div class="skill-bar">
-                        <div class="skill-icon">🔥<span class="skill-cd" style="display:none;">5</span></div>
-                        <div class="skill-icon">⚡<span class="skill-cd" style="display:none;">8</span></div>
-                        <div class="skill-icon">💫<span class="skill-cd" style="display:none;">12</span></div>
+                    <div class="stat-bar-container">
+                        <span class="stat-label">SP</span>
+                        <div class="stat-bar">
+                            <div class="sp-bar-fill" id="spFill" style="width: 100%"></div>
+                        </div>
+                    </div>
+                    <div class="base-stats">
+                        <div class="base-stat">
+                            <span class="base-stat-icon">🪙</span>
+                            <span class="base-stat-value" id="coins">0</span>
+                        </div>
+                        <div class="base-stat">
+                            <span class="base-stat-icon">⭐</span>
+                            <span class="base-stat-value" id="score">0</span>
+                        </div>
+                        <div class="base-stat">
+                            <span class="base-stat-icon">❤️</span>
+                            <span class="base-stat-value" id="lives">3</span>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <div class="stat-item">
-                    <span class="stat-icon" style="color: #ff6b6b;">💗</span>
-                    <span class="stat-value" id="lives">3</span>
-                </div>
-            </div>
+            <div class="job-level">⚔️ ADVENTURER LV.<span id="playerLevel">1</span></div>
         </div>
         
-        <div id="levelIndicator" class="hidden">⚔️ WAVE 1</div>
+        <div id="levelIndicator" class="hidden">⚔️ DUNGEON <span id="dungeonLevel">1</span></div>
         
         <!-- Start Screen -->
         <div id="startScreen" class="screen-overlay">
-            <div class="hero-card">
-                <div class="hero-name">⚔️ HERO CLASH ⚔️</div>
-                <div class="hero-role">MOBILE LEGENDS STYLE</div>
+            <div class="scroll-frame">
+                <div class="scroll-title">⚔ RAGNAROK QUEST ⚔</div>
+                <div class="scroll-subtitle">Fantasy Adventure</div>
             </div>
-            <div class="subtitle">12 Epic Waves Await!</div>
+            <div class="ragna-subtitle">12 dungeons await the brave adventurer...</div>
             
             <div class="progress-container">
                 <div class="progress-label">
-                    <span>Campaign Progress</span>
+                    <span>Quest Progress</span>
                     <span id="progressText">0/12</span>
                 </div>
                 <div class="progress-bar">
@@ -715,78 +745,84 @@
                 <span class="key">↑</span> or <span class="key">SPACE</span> Jump
             </div>
             
-            <button class="btn" onclick="startGame(1)">⚔️ BATTLE</button>
+            <button class="btn" onclick="startGame(1)">⚔ BEGIN QUEST</button>
         </div>
         
         <!-- Level Complete Screen -->
         <div id="levelCompleteScreen" class="screen-overlay hidden">
-            <div class="screen-title title-green">🏆 WAVE CLEAR!</div>
+            <div class="scroll-frame">
+                <div class="scroll-title">✨ DUNGEON CLEARED ✨</div>
+            </div>
             <div class="stars victory-effect" id="levelStars">⭐⭐⭐</div>
+            <div class="quest-banner">
+                <span class="quest-banner-text">Quest Complete!</span>
+            </div>
             <div class="stat-row-display">
                 <div class="stat-box">
                     <div class="stat-box-value" id="levelScore">0</div>
-                    <div class="stat-box-label">Gold Earned</div>
+                    <div class="stat-box-label">EXP Gained</div>
                 </div>
                 <div class="stat-box">
                     <div class="stat-box-value" id="levelCoins">0</div>
-                    <div class="stat-box-label">Crystals</div>
+                    <div class="stat-box-label">Zeny</div>
                 </div>
                 <div class="stat-box">
                     <div class="stat-box-value" id="levelTime">0s</div>
                     <div class="stat-box-label">Time</div>
                 </div>
             </div>
-            <button class="btn btn-purple" onclick="nextLevel()">⚔️ NEXT WAVE</button>
-            <button class="btn" onclick="restartFromLevelComplete()">🔄 RETRY</button>
+            <button class="btn btn-purple" onclick="nextLevel()">⚔ NEXT DUNGEON</button>
+            <button class="btn btn-brown" onclick="restartFromLevelComplete()">🔄 RETRY</button>
         </div>
         
         <!-- Game Over Screen -->
         <div id="gameOverScreen" class="screen-overlay hidden">
-            <div class="screen-title title-red">💀 DEFEATED</div>
+            <div class="screen-title">💀 DEFEATED 💀</div>
+            <div class="ragna-subtitle">The darkness claims another soul...</div>
             <div class="stat-row-display">
                 <div class="stat-box">
                     <div class="stat-box-value" id="finalScore">0</div>
-                    <div class="stat-box-label">Total Gold</div>
+                    <div class="stat-box-label">Total EXP</div>
                 </div>
                 <div class="stat-box">
                     <div class="stat-box-value" id="finalLevel">1</div>
-                    <div class="stat-box-label">Wave Reached</div>
+                    <div class="stat-box-label">Dungeon</div>
                 </div>
             </div>
-            <button class="btn btn-purple" onclick="retryLevel()">⚔️ RETRY</button>
-            <button class="btn" onclick="restartGame()">🏠 HOME</button>
+            <button class="btn btn-purple" onclick="retryLevel()">⚔ TRY AGAIN</button>
+            <button class="btn btn-brown" onclick="restartGame()">🏠 REST</button>
         </div>
         
         <!-- Win Screen -->
         <div id="winScreen" class="screen-overlay hidden">
-            <div class="screen-title title-gold victory-effect">🏆 LEGENDARY!</div>
-            <div class="subtitle">You conquered all 12 waves!</div>
-            <div class="stars">👑👑👑</div>
+            <div class="scroll-frame">
+                <div class="scroll-title">🏆 LEGENDARY HERO 🏆</div>
+            </div>
+            <div class="ragna-subtitle">You have conquered all 12 dungeons!</div>
+            <div class="stars victory-effect">👑👑👑</div>
             <div class="stat-row-display">
                 <div class="stat-box">
                     <div class="stat-box-value" id="winScore">0</div>
-                    <div class="stat-box-label">Total Gold</div>
+                    <div class="stat-box-label">Total EXP</div>
                 </div>
                 <div class="stat-box">
                     <div class="stat-box-value" id="winCoins">0</div>
-                    <div class="stat-box-label">Crystals</div>
+                    <div class="stat-box-label">Zeny</div>
                 </div>
                 <div class="stat-box">
                     <div class="stat-box-value" id="winTime">0s</div>
-                    <div class="stat-box-label">Total Time</div>
+                    <div class="stat-box-label">Time</div>
                 </div>
             </div>
-            <button class="btn" onclick="restartGame()">⚔️ PLAY AGAIN</button>
+            <button class="btn" onclick="restartGame()">⚔ PLAY AGAIN</button>
         </div>
     </div>
 
     <div id="mobileControls">
         <div class="control-group">
-            <div class="skill-dpad">
-                <button class="dpad-btn dpad-left" id="btnLeft">◀</button>
-                <button class="dpad-btn dpad-right" id="btnRight">▶</button>
-                <button class="dpad-btn dpad-up" id="btnJump">▲</button>
-            </div>
+            <button class="mobile-btn" id="btnLeft">◀</button>
+            <button class="mobile-btn" id="btnRight">▶</button>
+            <button class="mobile-btn" id="btnJump">▲</button>
         </div>
     </div>
 
@@ -811,29 +847,30 @@
         let particles = [];
         let floatingTexts = [];
         let screenShake = 0;
+        let spRecharge = 0;
 
         // Constants
         const GRAVITY = 0.55;
         const FRICTION = 0.85;
         const TILE_SIZE = 32;
 
-        // Hero character
+        // Ragnarok-style Adventurer
         const player = {
             x: 50,
             y: 300,
-            width: 36,
-            height: 44,
+            width: 40,
+            height: 56,
             vx: 0,
             vy: 0,
-            speed: 6,
-            jumpPower: -14,
+            speed: 5.5,
+            jumpPower: -13,
             grounded: false,
             direction: 1,
             invincible: 0,
             frame: 0,
             animTimer: 0,
             auraPhase: 0,
-            skillActive: 0
+            state: 'idle' // idle, walk, jump, attack
         };
 
         // Input
@@ -854,20 +891,20 @@
             decorations: [],
             stars: [],
             movingPlatforms: [],
-            theme: 'day'
+            theme: 'field'
         };
 
-        // ML-Style themes
+        // Ragnarok themes
         const themes = {
-            day: { sky1: '#1e3a5f', sky2: '#2d5a87', ground1: '#2d6a4f', ground2: '#1b4332', accent: '#ffd700' },
-            night: { sky1: '#0f0f23', sky2: '#1a1a3e', ground1: '#1e3a5f', ground2: '#0f2840', accent: '#8b5cf6' },
-            desert: { sky1: '#8b4513', sky2: '#cd853f', ground1: '#deb887', ground2: '#d2691e', accent: '#ff8c00' },
-            snow: { sky1: '#e8f4f8', sky2: '#b8d4e8', ground1: '#d4e8ed', ground2: '#a8c8d8', accent: '#00d4ff' },
-            forest: { sky1: '#1a4a1a', sky2: '#2d6a2d', ground1: '#3d7a37', ground2: '#2d5a27', accent: '#00ff88' },
-            cave: { sky1: '#0a0a15', sky2: '#151525', ground1: '#2a2a3a', ground2: '#1a1a2a', accent: '#ff00ff' }
+            field: { sky1: '#87ceeb', sky2: '#5c94fc', ground1: '#4a8c2a', ground2: '#8b4513', accent: '#ffd700', name: 'Prontera Fields' },
+            dungeon: { sky1: '#1a1a2e', sky2: '#2d2d4e', ground1: '#3d3d5a', ground2: '#2a2a3a', accent: '#9933ff', name: 'Dungeon' },
+            forest: { sky1: '#228b22', sky2: '#1a5c1a', ground1: '#2d5a2d', ground2: '#1e3d1e', accent: '#00ff00', name: 'Geffen Forest' },
+            cave: { sky1: '#2c2c2c', sky2: '#1a1a1a', ground1: '#4a4a4a', ground2: '#3a3a3a', accent: '#8888ff', name: 'Ant Hell' },
+            snow: { sky1: '#e8f4f8', sky2: '#b8d4e8', ground1: '#d4e8ed', ground2: '#a8c8d8', accent: '#00d4ff', name: 'Niflheim' },
+            volcano: { sky1: '#8b0000', sky2: '#4a0000', ground1: '#5a2a2a', ground2: '#3d1a1a', accent: '#ff4500', name: 'Magma Dungeon' }
         };
 
-        // Level configurations
+        // Generate level
         function generateLevel(levelNum) {
             level.platforms = [];
             level.enemies = [];
@@ -878,19 +915,19 @@
             level.movingPlatforms = [];
 
             // Theme based on level
-            const themeOrder = ['day', 'night', 'desert', 'snow', 'forest', 'cave', 'day', 'night', 'desert', 'snow', 'forest', 'cave'];
+            const themeOrder = ['field', 'dungeon', 'forest', 'cave', 'snow', 'volcano', 'field', 'dungeon', 'forest', 'cave', 'snow', 'volcano'];
             level.theme = themeOrder[(levelNum - 1) % themeOrder.length];
 
             const theme = themes[level.theme];
             canvas.style.background = `linear-gradient(180deg, ${theme.sky1} 0%, ${theme.sky2} 55%, ${theme.ground2} 55%, ${theme.ground2} 100%)`;
 
-            // Ground with gaps
+            // Ground with gaps (dungeon style)
             for (let x = 0; x < level.width; x += TILE_SIZE) {
                 let isGap = false;
                 const gapCount = Math.floor(levelNum / 3) + 1;
                 for (let g = 0; g < gapCount; g++) {
-                    const gapStart = 250 + (g * (level.width / gapCount));
-                    if (x > gapStart && x < gapStart + 120) isGap = true;
+                    const gapStart = 200 + (g * (level.width / gapCount));
+                    if (x > gapStart && x < gapStart + 130) isGap = true;
                 }
 
                 if (!isGap) {
@@ -898,8 +935,8 @@
                 }
             }
 
-            // Platforms
-            const platformCount = 8 + levelNum * 2;
+            // Stone platforms
+            const platformCount = 10 + levelNum * 2;
             for (let i = 0; i < platformCount; i++) {
                 const x = 150 + i * (level.width / platformCount) + (Math.random() - 0.5) * 100;
                 const y = 180 + Math.random() * 220;
@@ -909,19 +946,19 @@
                     x: Math.max(50, Math.min(level.width - w - 50, x)),
                     y: y,
                     width: w,
-                    height: 24,
-                    type: 'platform'
+                    height: 28,
+                    type: 'stone'
                 });
             }
 
-            // Moving platforms
+            // Moving stone platforms
             if (levelNum >= 4) {
                 for (let i = 0; i < levelNum - 3; i++) {
                     level.movingPlatforms.push({
                         x: 400 + i * 500,
                         y: 250 + Math.random() * 100,
                         width: 100,
-                        height: 24,
+                        height: 28,
                         startX: 400 + i * 500,
                         endX: 400 + i * 500 + 250,
                         speed: 1.5 + levelNum * 0.15,
@@ -930,10 +967,10 @@
                 }
             }
 
-            // Crystals (ML style coins)
-            const crystalCount = 15 + levelNum * 3;
-            for (let i = 0; i < crystalCount; i++) {
-                const x = 100 + i * (level.width / crystalCount);
+            // Zeny (coins)
+            const zenyCount = 18 + levelNum * 3;
+            for (let i = 0; i < zenyCount; i++) {
+                const x = 100 + i * (level.width / zenyCount);
                 const y = 150 + Math.random() * 250;
                 level.coins.push({
                     x: x,
@@ -943,11 +980,11 @@
                 });
             }
 
-            // Stars (ML emblems)
+            // Blue Gems (stars)
             if (levelNum >= 3) {
-                const starCount = Math.min(levelNum - 2, 5);
-                for (let i = 0; i < starCount; i++) {
-                    const x = 300 + i * (level.width / starCount);
+                const gemCount = Math.min(levelNum - 2, 5);
+                for (let i = 0; i < gemCount; i++) {
+                    const x = 300 + i * (level.width / gemCount);
                     const y = 100 + Math.random() * 200;
                     level.stars.push({
                         x: x,
@@ -958,9 +995,9 @@
                 }
             }
 
-            // Enemies (ML style minions/monsters)
+            // Monsters
+            const monsterTypes = ['poring', 'picky', 'horning', 'golem', 'demon'];
             const enemyCount = 4 + levelNum;
-            const enemyTypes = ['imp', 'goblin', 'titan'];
             for (let i = 0; i < enemyCount; i++) {
                 const x = 200 + i * (level.width / enemyCount);
                 const patrolRange = 100 + levelNum * 12;
@@ -970,34 +1007,34 @@
                     y: 384,
                     width: 32,
                     height: 36,
-                    vx: 2 + levelNum * 0.25,
+                    vx: 1.5 + levelNum * 0.2,
                     vy: 0,
                     patrolStart: x - patrolRange,
                     patrolEnd: x + patrolRange,
                     alive: true,
                     squashTimer: 0,
-                    type: enemyTypes[Math.floor(Math.random() * enemyTypes.length)],
-                    hp: 1 + Math.floor(levelNum / 4)
+                    type: monsterTypes[Math.floor(Math.random() * monsterTypes.length)],
+                    animFrame: 0
                 });
             }
 
-            // Victory tower at end
+            // Boss door at end
             level.flags.push({ x: level.width - 100, y: 192 });
 
             // Decorations
-            for (let x = 0; x < level.width; x += 200 + Math.random() * 150) {
+            for (let x = 0; x < level.width; x += 250 + Math.random() * 150) {
                 level.decorations.push({
                     x: x,
-                    type: 'tower',
+                    type: level.theme === 'field' ? 'tree' : 'pillar',
                     variant: Math.floor(Math.random() * 3)
                 });
             }
 
-            for (let x = 0; x < level.width; x += 150 + Math.random() * 100) {
+            for (let x = 0; x < level.width; x += 200 + Math.random() * 100) {
                 level.decorations.push({
                     x: x,
                     type: 'cloud',
-                    y: 30 + Math.random() * 100,
+                    y: 40 + Math.random() * 100,
                     variant: Math.floor(Math.random() * 3)
                 });
             }
@@ -1011,6 +1048,7 @@
             player.grounded = false;
             player.invincible = 0;
             cameraX = 0;
+            spRecharge = 0;
         }
 
         function rectCollision(a, b) {
@@ -1081,10 +1119,10 @@
             floatingTexts.forEach(t => {
                 ctx.globalAlpha = t.life / 60;
                 ctx.fillStyle = t.color;
-                ctx.font = 'bold 24px Rajdhani';
+                ctx.font = 'bold 22px MedievalSharp';
                 ctx.textAlign = 'center';
-                ctx.shadowColor = t.color;
-                ctx.shadowBlur = 15;
+                ctx.shadowColor = '#000';
+                ctx.shadowBlur = 4;
                 ctx.fillText(t.text, t.x - cameraX, t.y);
             });
             ctx.globalAlpha = 1;
@@ -1098,28 +1136,35 @@
             if (keys.left) {
                 player.vx = -player.speed;
                 player.direction = -1;
+                player.state = 'walk';
             } else if (keys.right) {
                 player.vx = player.speed;
                 player.direction = 1;
+                player.state = 'walk';
             } else {
                 player.vx *= FRICTION;
+                player.state = 'idle';
             }
 
             if (keys.jump && player.grounded && !keys.jumpPressed) {
                 player.vy = player.jumpPower;
                 player.grounded = false;
+                player.state = 'jump';
                 keys.jumpPressed = true;
-                createParticle(player.x + player.width/2, player.y + player.height, '#8b5cf6', 5);
-                createFloatingText(player.x + player.width/2, player.y, 'JUMP!', '#00d4ff');
+                createParticle(player.x + player.width/2, player.y + player.height, '#daa520', 5);
+                createFloatingText(player.x + player.width/2, player.y, 'JUMP!', '#87ceeb');
             }
 
             if (!keys.jump) {
                 keys.jumpPressed = false;
             }
 
-            // Skill effect
-            if (player.skillActive > 0) player.skillActive--;
-            player.auraPhase += 0.1;
+            if (!player.grounded) player.state = 'jump';
+            player.auraPhase += 0.08;
+
+            // SP recharge
+            if (spRecharge < 100) spRecharge += 0.1;
+            document.getElementById('spFill').style.width = spRecharge + '%';
 
             // Apply gravity
             player.vy += GRAVITY;
@@ -1129,7 +1174,6 @@
             player.x += player.vx;
             player.y += player.vy;
 
-            // Keep player in bounds
             if (player.x < 0) player.x = 0;
             if (player.x > level.width - player.width) player.x = level.width - player.width;
 
@@ -1171,18 +1215,14 @@
             if (player.y > canvas.height + 50) {
                 lives--;
                 screenShake = 15;
-                createParticle(player.x, canvas.height - 50, '#ff4444', 15);
+                createParticle(player.x, canvas.height - 50, '#8b0000', 15);
                 createFloatingText(player.x, canvas.height - 100, 'DEFEATED!', '#ff4444');
                 document.getElementById('lives').textContent = lives;
                 document.getElementById('hpFill').style.width = (lives / 3 * 100) + '%';
-                if (lives <= 0) {
-                    gameOver();
-                } else {
-                    resetPlayer();
-                }
+                if (lives <= 0) gameOver();
+                else resetPlayer();
             }
 
-            // Invincibility timer
             if (player.invincible > 0) player.invincible--;
 
             // Enemy update
@@ -1195,6 +1235,7 @@
                 enemy.x += enemy.vx;
                 enemy.vy += GRAVITY;
                 enemy.y += enemy.vy;
+                enemy.animFrame += 0.1;
 
                 if (enemy.y + enemy.height > 416) {
                     enemy.y = 416 - enemy.height;
@@ -1210,11 +1251,11 @@
                         enemy.alive = false;
                         enemy.squashTimer = 30;
                         player.vy = -10;
-                        levelScore += 150;
-                        score += 150;
+                        levelScore += 200;
+                        score += 200;
                         document.getElementById('score').textContent = score;
-                        createParticle(enemy.x + enemy.width/2, enemy.y, '#ff6b00', 12);
-                        createFloatingText(enemy.x + enemy.width/2, enemy.y - 20, '+150', '#ffd700');
+                        createParticle(enemy.x + enemy.width/2, enemy.y, '#ffd700', 12);
+                        createFloatingText(enemy.x + enemy.width/2, enemy.y - 20, '+200', '#ffd700');
                         screenShake = 5;
                     } else {
                         lives--;
@@ -1229,10 +1270,10 @@
                 }
             });
 
-            // Crystal collection
+            // Zeny collection
             level.coins.forEach(coin => {
                 if (!coin.collected) {
-                    const coinRect = { x: coin.x, y: coin.y, width: 24, height: 28 };
+                    const coinRect = { x: coin.x, y: coin.y, width: 24, height: 24 };
                     if (rectCollision(player, coinRect)) {
                         coin.collected = true;
                         levelCoins++;
@@ -1241,49 +1282,46 @@
                         score += 100;
                         document.getElementById('coins').textContent = coins;
                         document.getElementById('score').textContent = score;
-                        createParticle(coin.x + 12, coin.y + 14, '#00d4ff', 8);
-                        createFloatingText(coin.x + 12, coin.y, '+100', '#00d4ff');
+                        createParticle(coin.x + 12, coin.y + 12, '#ffd700', 8);
+                        createFloatingText(coin.x + 12, coin.y, '+100', '#ffd700');
                     }
                 }
             });
 
-            // Star collection
+            // Blue Gem collection
             level.stars.forEach(star => {
                 if (!star.collected) {
                     star.angle += 0.05;
                     const starRect = { x: star.x - 18, y: star.y - 18, width: 36, height: 36 };
                     if (rectCollision(player, starRect)) {
                         star.collected = true;
-                        levelScore += 500;
-                        score += 500;
+                        levelScore += 800;
+                        score += 800;
                         document.getElementById('score').textContent = score;
-                        createParticle(star.x, star.y, '#ffd700', 25);
-                        createFloatingText(star.x, star.y, '+500', '#ffd700');
+                        createParticle(star.x, star.y, '#4488ff', 25);
+                        createFloatingText(star.x, star.y, '+800', '#4488ff');
                         screenShake = 8;
                     }
                 }
             });
 
-            // Flag collision
+            // Boss door
             level.flags.forEach(flag => {
                 if (player.x + player.width > flag.x && player.x < flag.x + 32) {
                     levelComplete();
                 }
             });
 
-            // Animation timer
             player.animTimer++;
-            if (player.animTimer > 6) {
+            if (player.animTimer > 10) {
                 player.animTimer = 0;
                 player.frame = (player.frame + 1) % 4;
             }
 
-            // Camera follow
             const targetCameraX = player.x - canvas.width / 3;
             cameraX += (targetCameraX - cameraX) * 0.1;
             cameraX = Math.max(0, Math.min(cameraX, level.width - canvas.width));
 
-            // Screen shake decay
             if (screenShake > 0) screenShake *= 0.9;
         }
 
@@ -1307,48 +1345,49 @@
 
             // Draw decorations
             level.decorations.forEach(dec => {
-                if (dec.type === 'cloud') drawMLCloud(dec.x, dec.y, dec.variant, theme);
-                else if (dec.type === 'tower') drawTower(dec.x, dec.variant, theme);
+                if (dec.type === 'cloud') drawCloud(dec.x, dec.y, dec.variant);
+                else if (dec.type === 'tree') drawTree(dec.x, dec.variant, theme);
+                else if (dec.type === 'pillar') drawPillar(dec.x, dec.variant, theme);
             });
 
             // Draw platforms
             level.platforms.forEach(platform => {
-                if (platform.type === 'ground') drawMLGround(platform, theme);
-                else drawMLPlatform(platform, theme);
+                if (platform.type === 'ground') drawGround(platform, theme);
+                else drawStonePlatform(platform, theme);
             });
 
             // Draw moving platforms
             level.movingPlatforms.forEach(mp => {
-                drawMLPlatform(mp, theme);
+                drawStonePlatform(mp, theme);
             });
 
-            // Draw crystals
+            // Draw zeny
             const time = Date.now() / 150;
             level.coins.forEach(coin => {
                 if (!coin.collected) {
-                    drawCrystal(coin.x, coin.y + Math.sin(time + coin.bounceOffset) * 4);
+                    drawZeny(coin.x, coin.y + Math.sin(time + coin.bounceOffset) * 4);
                 }
             });
 
-            // Draw stars
+            // Draw blue gems
             level.stars.forEach(star => {
                 if (!star.collected) {
-                    drawMLStar(star.x, star.y + Math.sin(star.angle) * 6, star.angle);
+                    drawBlueGem(star.x, star.y + Math.sin(star.angle) * 6, star.angle);
                 }
             });
 
-            // Draw victory tower
-            level.flags.forEach(flag => drawTowerVictory(flag, theme));
+            // Draw boss door
+            level.flags.forEach(flag => drawBossDoor(flag, theme));
 
-            // Draw enemies
+            // Draw monsters
             level.enemies.forEach(enemy => {
                 if (enemy.alive || enemy.squashTimer > 0) {
-                    drawMLEnemy(enemy, theme);
+                    drawMonster(enemy, theme);
                 }
             });
 
-            // Draw hero
-            drawMLHero();
+            // Draw adventurer
+            drawAdventurer();
 
             // Draw particles
             drawParticles();
@@ -1357,10 +1396,10 @@
             ctx.restore();
         }
 
-        function drawMLCloud(x, y, variant) {
+        function drawCloud(x, y, variant) {
             const sizes = [[80, 40], [100, 50], [60, 35]];
             const [w, h] = sizes[variant];
-            ctx.fillStyle = 'rgba(255,255,255,0.3)';
+            ctx.fillStyle = 'rgba(255,255,255,0.6)';
             ctx.beginPath();
             ctx.arc(x + w/2, y + h/2, h/2, 0, Math.PI * 2);
             ctx.arc(x + w/4, y + h/2 + 8, h/3, 0, Math.PI * 2);
@@ -1368,45 +1407,53 @@
             ctx.fill();
         }
 
-        function drawTower(x, variant, theme) {
-            const h = 60 + variant * 40;
-            // Tower base
-            ctx.fillStyle = theme.ground1;
-            ctx.fillRect(x, 416 - h, 40, h);
-            // Tower top
+        function drawTree(x, variant, theme) {
+            // Trunk
+            ctx.fillStyle = '#5d3a1a';
+            ctx.fillRect(x + 15, 350, 25, 66);
+            // Foliage
             ctx.fillStyle = theme.accent;
             ctx.beginPath();
-            ctx.moveTo(x, 416 - h);
-            ctx.lineTo(x + 20, 416 - h - 30);
-            ctx.lineTo(x + 40, 416 - h);
+            ctx.arc(x + 27, 320, 45, 0, Math.PI * 2);
+            ctx.arc(x + 10, 345, 35, 0, Math.PI * 2);
+            ctx.arc(x + 45, 345, 35, 0, Math.PI * 2);
             ctx.fill();
-            // Glow effect
+        }
+
+        function drawPillar(x, variant, theme) {
+            const h = 80 + variant * 50;
+            // Stone pillar
+            ctx.fillStyle = '#5a5a5a';
+            ctx.fillRect(x, 416 - h, 35, h);
+            // Top
+            ctx.fillStyle = '#6a6a6a';
+            ctx.fillRect(x - 5, 416 - h - 10, 45, 15);
+            // Rune marking
+            ctx.fillStyle = theme.accent;
             ctx.shadowColor = theme.accent;
-            ctx.shadowBlur = 15;
-            ctx.fillRect(x + 15, 416 - h + 10, 10, 20);
+            ctx.shadowBlur = 10;
+            ctx.font = '20px Arial';
+            ctx.fillText('✧', x + 12, 416 - h/2);
             ctx.shadowBlur = 0;
         }
 
-        function drawMLGround(platform, theme) {
-            // Grass top with glow
+        function drawGround(platform, theme) {
             ctx.fillStyle = theme.ground1;
             ctx.fillRect(platform.x, platform.y, platform.width, 10);
-            // Dirt
             ctx.fillStyle = theme.ground2;
             ctx.fillRect(platform.x, platform.y + 10, platform.width, platform.height - 10);
-            // Highlight
-            ctx.fillStyle = 'rgba(255,255,255,0.2)';
-            ctx.fillRect(platform.x, platform.y, platform.width, 3);
+            ctx.fillStyle = 'rgba(255,255,255,0.15)';
+            ctx.fillRect(platform.x, platform.y, platform.width, 4);
         }
 
-        function drawMLPlatform(platform, theme) {
-            // Platform body
-            ctx.fillStyle = theme.ground2;
+        function drawStonePlatform(platform, theme) {
+            // Stone blocks
+            ctx.fillStyle = '#5a5a5a';
             ctx.fillRect(platform.x, platform.y, platform.width, platform.height);
-            // Top highlight
-            ctx.fillStyle = theme.ground1;
-            ctx.fillRect(platform.x, platform.y, platform.width, 6);
-            // Edge glow
+            // Highlight
+            ctx.fillStyle = '#6a6a6a';
+            ctx.fillRect(platform.x, platform.y, platform.width, 5);
+            // Border
             ctx.strokeStyle = theme.accent;
             ctx.lineWidth = 2;
             ctx.shadowColor = theme.accent;
@@ -1415,187 +1462,178 @@
             ctx.shadowBlur = 0;
         }
 
-        function drawCrystal(x, y) {
-            const glow = Math.sin(Date.now() / 100) * 0.3 + 0.7;
+        function drawZeny(x, y) {
             ctx.save();
-            ctx.shadowColor = '#00d4ff';
-            ctx.shadowBlur = 20 * glow;
+            ctx.shadowColor = '#ffd700';
+            ctx.shadowBlur = 15;
             
-            // Crystal shape
-            ctx.fillStyle = '#00d4ff';
+            // Gold coin
+            ctx.fillStyle = '#ffd700';
             ctx.beginPath();
-            ctx.moveTo(x + 12, y);
-            ctx.lineTo(x + 24, y + 10);
-            ctx.lineTo(x + 20, y + 28);
-            ctx.lineTo(x + 4, y + 28);
-            ctx.lineTo(x, y + 10);
-            ctx.closePath();
+            ctx.arc(x + 12, y + 12, 12, 0, Math.PI * 2);
             ctx.fill();
             
             // Inner shine
-            ctx.fillStyle = 'rgba(255,255,255,0.6)';
+            ctx.fillStyle = '#ffec8b';
             ctx.beginPath();
-            ctx.moveTo(x + 12, y + 4);
-            ctx.lineTo(x + 18, y + 12);
-            ctx.lineTo(x + 12, y + 20);
-            ctx.lineTo(x + 6, y + 12);
-            ctx.closePath();
+            ctx.arc(x + 10, y + 10, 8, 0, Math.PI * 2);
             ctx.fill();
+            
+            // Z symbol
+            ctx.fillStyle = '#b8860b';
+            ctx.font = 'bold 12px Arial';
+            ctx.fillText('Z', x + 6, y + 16);
             
             ctx.restore();
         }
 
-        function drawMLStar(x, y, angle) {
+        function drawBlueGem(x, y, angle) {
             ctx.save();
             ctx.translate(x, y);
             ctx.rotate(angle);
             
-            ctx.shadowColor = '#ffd700';
+            ctx.shadowColor = '#4488ff';
             ctx.shadowBlur = 25;
             
-            // Star shape
-            ctx.fillStyle = '#ffd700';
+            // Diamond shape
+            ctx.fillStyle = '#4488ff';
             ctx.beginPath();
-            for (let i = 0; i < 5; i++) {
-                const outerAngle = (i * 4 * Math.PI / 5) - Math.PI/2;
-                const innerAngle = ((i * 4 + 2) * Math.PI / 5) - Math.PI/2;
-                ctx.lineTo(Math.cos(outerAngle) * 18, Math.sin(outerAngle) * 18);
-                ctx.lineTo(Math.cos(innerAngle) * 8, Math.sin(innerAngle) * 8);
-            }
+            ctx.moveTo(0, -18);
+            ctx.lineTo(15, 0);
+            ctx.lineTo(0, 18);
+            ctx.lineTo(-15, 0);
             ctx.closePath();
             ctx.fill();
             
-            // Center glow
-            ctx.fillStyle = '#fff';
+            // Inner glow
+            ctx.fillStyle = '#88bbff';
             ctx.beginPath();
-            ctx.arc(0, 0, 6, 0, Math.PI * 2);
+            ctx.moveTo(0, -10);
+            ctx.lineTo(8, 0);
+            ctx.lineTo(0, 10);
+            ctx.lineTo(-8, 0);
+            ctx.closePath();
             ctx.fill();
             
             ctx.restore();
         }
 
-        function drawTowerVictory(flag, theme) {
-            // Tower structure
-            ctx.fillStyle = '#2d1b4e';
-            ctx.fillRect(flag.x + 8, flag.y, 24, 224);
+        function drawBossDoor(flag, theme) {
+            // Stone door frame
+            ctx.fillStyle = '#3d3d3d';
+            ctx.fillRect(flag.x, flag.y, 50, 224);
             
-            // Crystal on top
-            ctx.save();
-            ctx.shadowColor = '#ffd700';
-            ctx.shadowBlur = 30;
-            ctx.fillStyle = '#ffd700';
-            ctx.beginPath();
-            ctx.moveTo(flag.x + 20, flag.y);
-            ctx.lineTo(flag.x + 32, flag.y + 25);
-            ctx.lineTo(flag.x + 20, flag.y + 50);
-            ctx.lineTo(flag.x + 8, flag.y + 25);
-            ctx.closePath();
-            ctx.fill();
-            ctx.restore();
+            // Door
+            ctx.fillStyle = '#5a1a1a';
+            ctx.fillRect(flag.x + 5, flag.y + 10, 40, 200);
             
-            // Victory banner
-            ctx.fillStyle = '#ff6b00';
-            ctx.beginPath();
-            ctx.moveTo(flag.x + 32, flag.y + 20);
-            ctx.lineTo(flag.x + 80, flag.y + 50);
-            ctx.lineTo(flag.x + 32, flag.y + 80);
-            ctx.closePath();
-            ctx.fill();
+            // Iron bands
+            ctx.fillStyle = '#2a2a2a';
+            ctx.fillRect(flag.x + 5, flag.y + 30, 40, 8);
+            ctx.fillRect(flag.x + 5, flag.y + 100, 40, 8);
+            ctx.fillRect(flag.x + 5, flag.y + 170, 40, 8);
             
-            // Star emblem
-            ctx.fillStyle = '#ffd700';
-            ctx.beginPath();
-            for (let i = 0; i < 5; i++) {
-                const angle = (i * 4 * Math.PI / 5) - Math.PI/2;
-                const innerAngle = ((i * 4 + 2) * Math.PI / 5) - Math.PI/2;
-                ctx.lineTo(flag.x + 50 + Math.cos(angle) * 15, flag.y + 50 + Math.sin(angle) * 15);
-                ctx.lineTo(flag.x + 50 + Math.cos(innerAngle) * 7, flag.y + 50 + Math.sin(innerAngle) * 7);
-            }
-            ctx.closePath();
-            ctx.fill();
+            // Boss emblem
+            ctx.fillStyle = theme.accent;
+            ctx.shadowColor = theme.accent;
+            ctx.shadowBlur = 20;
+            ctx.font = '40px Arial';
+            ctx.fillText('♛', flag.x + 10, flag.y + 80);
+            ctx.shadowBlur = 0;
         }
 
-        function drawMLEnemy(enemy, theme) {
+        function drawMonster(enemy, theme) {
             const squash = enemy.squashTimer > 0;
             const w = squash ? enemy.width : enemy.width;
-            const h = squash ? 12 : enemy.height;
-            const yOffset = squash ? enemy.height - 12 : 0;
+            const h = squash ? 10 : enemy.height;
+            const yOffset = squash ? enemy.height - 10 : 0;
             
             ctx.save();
             
-            if (enemy.type === 'imp') {
-                // Red imp
-                ctx.shadowColor = '#ff4444';
-                ctx.shadowBlur = 15;
-                ctx.fillStyle = '#dc2626';
-                ctx.beginPath();
-                ctx.arc(enemy.x + w/2, enemy.y + yOffset + h/2, w/2, 0, Math.PI * 2);
-                ctx.fill();
-                
-                // Horns
-                ctx.fillStyle = '#7f1d1d';
-                ctx.beginPath();
-                ctx.moveTo(enemy.x + 4, enemy.y + yOffset + 5);
-                ctx.lineTo(enemy.x - 2, enemy.y + yOffset - 10);
-                ctx.lineTo(enemy.x + 10, enemy.y + yOffset + 8);
-                ctx.fill();
-                ctx.beginPath();
-                ctx.moveTo(enemy.x + w - 4, enemy.y + yOffset + 5);
-                ctx.lineTo(enemy.x + w + 2, enemy.y + yOffset - 10);
-                ctx.lineTo(enemy.x + w - 10, enemy.y + yOffset + 8);
-                ctx.fill();
-            } else if (enemy.type === 'goblin') {
-                // Green goblin
-                ctx.shadowColor = '#22c55e';
-                ctx.shadowBlur = 15;
-                ctx.fillStyle = '#16a34a';
-                ctx.beginPath();
-                ctx.arc(enemy.x + w/2, enemy.y + yOffset + h/2, w/2, 0, Math.PI * 2);
-                ctx.fill();
-                
-                // Ears
-                ctx.fillStyle = '#15803d';
-                ctx.beginPath();
-                ctx.ellipse(enemy.x, enemy.y + yOffset + h/2 - 5, 6, 12, -0.3, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.beginPath();
-                ctx.ellipse(enemy.x + w, enemy.y + yOffset + h/2 - 5, 6, 12, 0.3, 0, Math.PI * 2);
-                ctx.fill();
-            } else {
-                // Titan
-                ctx.shadowColor = '#8b5cf6';
-                ctx.shadowBlur = 20;
-                ctx.fillStyle = '#7c3aed';
-                ctx.beginPath();
-                ctx.arc(enemy.x + w/2, enemy.y + yOffset + h/2, w/2 + 4, 0, Math.PI * 2);
-                ctx.fill();
-                
-                // Armor plates
-                ctx.fillStyle = '#6d28d9';
-                ctx.fillRect(enemy.x + 4, enemy.y + yOffset + h/2, 8, 10);
-                ctx.fillRect(enemy.x + w - 12, enemy.y + yOffset + h/2, 8, 10);
-            }
+            // Bounce animation
+            const bounce = Math.sin(enemy.animFrame * 2) * 3;
             
-            if (!squash) {
-                // Eyes
+            if (enemy.type === 'poring') {
+                // Pink poring
+                ctx.shadowColor = '#ff69b4';
+                ctx.shadowBlur = 15;
+                ctx.fillStyle = '#ffb6c1';
+                ctx.beginPath();
+                ctx.arc(enemy.x + w/2, enemy.y + yOffset + h/2 - bounce, w/2, 0, Math.PI * 2);
+                ctx.fill();
+                // Shine
                 ctx.fillStyle = '#fff';
                 ctx.beginPath();
-                ctx.arc(enemy.x + w/3, enemy.y + yOffset + h/3, 6, 0, Math.PI * 2);
-                ctx.arc(enemy.x + w*2/3, enemy.y + yOffset + h/3, 6, 0, Math.PI * 2);
+                ctx.arc(enemy.x + w/3, enemy.y + yOffset + h/3 - bounce, 5, 0, Math.PI * 2);
                 ctx.fill();
-                
-                ctx.fillStyle = '#000';
-                const pupilOffset = enemy.vx > 0 ? 2 : -2;
+            } else if (enemy.type === 'picky') {
+                // Yellow picky
+                ctx.shadowColor = '#ffd700';
+                ctx.shadowBlur = 15;
+                ctx.fillStyle = '#f0c040';
                 ctx.beginPath();
-                ctx.arc(enemy.x + w/3 + pupilOffset, enemy.y + yOffset + h/3, 3, 0, Math.PI * 2);
-                ctx.arc(enemy.x + w*2/3 + pupilOffset, enemy.y + yOffset + h/3, 3, 0, Math.PI * 2);
+                ctx.ellipse(enemy.x + w/2, enemy.y + yOffset + h/2 - bounce, w/2, h/2, 0, 0, Math.PI * 2);
+                ctx.fill();
+                // Shell
+                ctx.fillStyle = '#8b4513';
+                ctx.beginPath();
+                ctx.arc(enemy.x + w/2, enemy.y + yOffset + h/2 - bounce - 5, w/3, 0, Math.PI * 2);
+                ctx.fill();
+            } else if (enemy.type === 'horning') {
+                // Goat demon
+                ctx.shadowColor = '#8b0000';
+                ctx.shadowBlur = 15;
+                ctx.fillStyle = '#4a0000';
+                ctx.fillRect(enemy.x, enemy.y + yOffset - bounce, w, h);
+                // Horns
+                ctx.fillStyle = '#ffd700';
+                ctx.beginPath();
+                ctx.moveTo(enemy.x, enemy.y + yOffset - 8 - bounce);
+                ctx.lineTo(enemy.x - 8, enemy.y + yOffset - 20 - bounce);
+                ctx.lineTo(enemy.x + 8, enemy.y + yOffset - bounce);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.moveTo(enemy.x + w, enemy.y + yOffset - 8 - bounce);
+                ctx.lineTo(enemy.x + w + 8, enemy.y + yOffset - 20 - bounce);
+                ctx.lineTo(enemy.x + w - 8, enemy.y + yOffset - bounce);
+                ctx.fill();
+            } else if (enemy.type === 'golem') {
+                // Stone golem
+                ctx.shadowColor = '#666';
+                ctx.shadowBlur = 20;
+                ctx.fillStyle = '#555';
+                ctx.fillRect(enemy.x, enemy.y + yOffset - bounce, w + 4, h + 4);
+                // Eyes
+                ctx.fillStyle = theme.accent;
+                ctx.shadowColor = theme.accent;
+                ctx.fillRect(enemy.x + 5, enemy.y + yOffset + 5 - bounce, 8, 8);
+                ctx.fillRect(enemy.x + w - 8, enemy.y + yOffset + 5 - bounce, 8, 8);
+            } else {
+                // Demon
+                ctx.shadowColor = '#8b0000';
+                ctx.shadowBlur = 20;
+                ctx.fillStyle = '#3a0000';
+                ctx.beginPath();
+                ctx.arc(enemy.x + w/2, enemy.y + yOffset + h/2 - bounce, w/2 + 2, 0, Math.PI * 2);
+                ctx.fill();
+                // Wings
+                ctx.fillStyle = '#2a0000';
+                ctx.beginPath();
+                ctx.moveTo(enemy.x - 5, enemy.y + yOffset + h/3 - bounce);
+                ctx.lineTo(enemy.x - 20, enemy.y + yOffset - bounce);
+                ctx.lineTo(enemy.x, enemy.y + yOffset + h/2 - bounce);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.moveTo(enemy.x + w + 5, enemy.y + yOffset + h/3 - bounce);
+                ctx.lineTo(enemy.x + w + 20, enemy.y + yOffset - bounce);
+                ctx.lineTo(enemy.x + w, enemy.y + yOffset + h/2 - bounce);
                 ctx.fill();
             }
             
             ctx.restore();
         }
 
-        function drawMLHero() {
+        function drawAdventurer() {
             if (player.invincible > 0 && Math.floor(player.invincible / 4) % 2 === 0) return;
 
             const x = player.x;
@@ -1606,95 +1644,131 @@
             ctx.save();
             
             // Aura effect
-            const auraSize = 50 + Math.sin(player.auraPhase) * 10;
+            const auraSize = 55 + Math.sin(player.auraPhase) * 8;
             const gradient = ctx.createRadialGradient(x + w/2, y + h/2, 0, x + w/2, y + h/2, auraSize);
-            gradient.addColorStop(0, 'rgba(139, 92, 246, 0.4)');
-            gradient.addColorStop(0.5, 'rgba(255, 107, 0, 0.2)');
+            gradient.addColorStop(0, 'rgba(255, 215, 0, 0.3)');
+            gradient.addColorStop(0.5, 'rgba(218, 165, 32, 0.15)');
             gradient.addColorStop(1, 'transparent');
             ctx.fillStyle = gradient;
             ctx.beginPath();
             ctx.arc(x + w/2, y + h/2, auraSize, 0, Math.PI * 2);
             ctx.fill();
             
-            // Hero glow
-            ctx.shadowColor = '#ffd700';
-            ctx.shadowBlur = 20;
-            
-            // Cape
-            ctx.fillStyle = '#dc2626';
+            // Shadow
+            ctx.fillStyle = 'rgba(0,0,0,0.3)';
             ctx.beginPath();
-            ctx.moveTo(x + 4, y + 15);
-            ctx.quadraticCurveTo(x - 8, y + h, x + 4, y + h);
-            ctx.lineTo(x + w - 4, y + h);
-            ctx.quadraticCurveTo(x + w + 8, y + h, x + w - 4, y + 15);
+            ctx.ellipse(x + w/2, y + h + 5, w/2, 8, 0, 0, Math.PI * 2);
             ctx.fill();
             
-            // Body armor
-            ctx.fillStyle = '#1e40af';
-            ctx.fillRect(x + 4, y + 16, w - 8, 20);
+            // Cloak
+            ctx.fillStyle = '#8b0000';
+            ctx.beginPath();
+            if (player.direction === 1) {
+                ctx.moveTo(x + 8, y + 20);
+                ctx.quadraticCurveTo(x - 5, y + h + 10, x + 10, y + h);
+                ctx.lineTo(x + w - 5, y + h);
+                ctx.quadraticCurveTo(x + w + 10, y + h + 10, x + w - 8, y + 20);
+            } else {
+                ctx.moveTo(x + w - 8, y + 20);
+                ctx.quadraticCurveTo(x + w + 5, y + h + 10, x + w - 10, y + h);
+                ctx.lineTo(x + 5, y + h);
+                ctx.quadraticCurveTo(x - 10, y + h + 10, x + 8, y + 20);
+            }
+            ctx.fill();
+            
+            // Armor body
+            ctx.fillStyle = '#2c2c2c';
+            ctx.fillRect(x + 8, y + 22, w - 16, 22);
             
             // Chest plate
-            ctx.fillStyle = '#3b82f6';
+            ctx.fillStyle = '#4a4a4a';
             ctx.beginPath();
-            ctx.moveTo(x + w/2, y + 18);
-            ctx.lineTo(x + w - 6, y + 28);
-            ctx.lineTo(x + w/2, y + 36);
-            ctx.lineTo(x + 6, y + 28);
+            ctx.moveTo(x + w/2, y + 24);
+            ctx.lineTo(x + w - 8, y + 36);
+            ctx.lineTo(x + w/2, y + 44);
+            ctx.lineTo(x + 8, y + 36);
             ctx.closePath();
             ctx.fill();
             
-            // Shoulder pads
+            // Gold trim
+            ctx.strokeStyle = '#ffd700';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Shoulder guards
+            ctx.fillStyle = '#5a5a5a';
+            ctx.beginPath();
+            ctx.arc(x + 8, y + 24, 10, 0, Math.PI * 2);
+            ctx.arc(x + w - 8, y + 24, 10, 0, Math.PI * 2);
+            ctx.fill();
             ctx.fillStyle = '#ffd700';
             ctx.beginPath();
-            ctx.arc(x + 4, y + 18, 8, 0, Math.PI * 2);
-            ctx.arc(x + w - 4, y + 18, 8, 0, Math.PI * 2);
+            ctx.arc(x + 8, y + 24, 6, 0, Math.PI * 2);
+            ctx.arc(x + w - 8, y + 24, 6, 0, Math.PI * 2);
             ctx.fill();
             
             // Head
-            ctx.fillStyle = '#fcd34d';
+            ctx.fillStyle = '#e8c090';
             ctx.beginPath();
-            ctx.arc(x + w/2, y + 10, 10, 0, Math.PI * 2);
+            ctx.arc(x + w/2, y + 14, 10, 0, Math.PI * 2);
             ctx.fill();
             
-            // Helmet
-            ctx.fillStyle = '#1e3a8a';
+            // Hair
+            ctx.fillStyle = '#3d2314';
             ctx.beginPath();
-            ctx.arc(x + w/2, y + 6, 12, Math.PI, 0);
+            ctx.arc(x + w/2, y + 10, 12, Math.PI, 0);
             ctx.fill();
             
-            // Visor
-            ctx.fillStyle = '#0ea5e9';
-            ctx.fillRect(x + 8, y + 8, w - 16, 6);
+            // Adventurer hat
+            ctx.fillStyle = '#4a3728';
+            ctx.beginPath();
+            ctx.moveTo(x + w/2 - 14, y + 6);
+            ctx.lineTo(x + w/2, y - 8);
+            ctx.lineTo(x + w/2 + 14, y + 6);
+            ctx.closePath();
+            ctx.fill();
             
-            // Eye glow
-            ctx.fillStyle = '#fff';
-            ctx.shadowColor = '#fff';
-            ctx.shadowBlur = 10;
+            // Hat feather
+            ctx.fillStyle = '#ffd700';
+            ctx.beginPath();
+            ctx.moveTo(x + w/2 + 10, y + 2);
+            ctx.quadraticCurveTo(x + w/2 + 20, y - 5, x + w/2 + 15, y + 8);
+            ctx.fill();
+            
+            // Eyes
+            ctx.fillStyle = '#000';
             const eyeX = player.direction === 1 ? 2 : -2;
-            ctx.beginPath();
-            ctx.arc(x + 12 + eyeX, y + 10, 3, 0, Math.PI * 2);
-            ctx.arc(x + w - 12 + eyeX, y + 10, 3, 0, Math.PI * 2);
-            ctx.fill();
+            ctx.fillRect(x + w/2 - 5 + eyeX, y + 12, 3, 4);
+            ctx.fillRect(x + w/2 + 2 + eyeX, y + 12, 3, 4);
+            
+            // Sword on back
+            ctx.fillStyle = '#888';
+            ctx.save();
+            ctx.translate(x + w/2, y + 30);
+            ctx.rotate(player.direction === 1 ? -0.3 : 0.3);
+            ctx.fillRect(-2, -25, 4, 30);
+            ctx.fillStyle = '#ffd700';
+            ctx.fillRect(-4, 2, 8, 6);
+            ctx.restore();
             
             // Legs
-            ctx.shadowBlur = 0;
-            ctx.fillStyle = '#1e3a8a';
-            const legOffset = Math.abs(player.vx) > 0.5 ? (player.frame % 2 === 0 ? 4 : -4) : 0;
-            ctx.fillRect(x + 8 + legOffset, y + 34, 8, 10);
-            ctx.fillRect(x + w - 16 - legOffset, y + 34, 8, 10);
+            const legOffset = player.state === 'walk' ? (player.frame % 2 === 0 ? 5 : -5) : 0;
+            ctx.fillStyle = '#2c2c2c';
+            ctx.fillRect(x + 12 + legOffset, y + 42, 8, 14);
+            ctx.fillRect(x + w - 20 - legOffset, y + 42, 8, 14);
             
             // Boots
-            ctx.fillStyle = '#7c2d12';
-            ctx.fillRect(x + 6 + legOffset, y + 40, 12, 6);
-            ctx.fillRect(x + w - 18 - legOffset, y + 40, 12, 6);
+            ctx.fillStyle = '#3d2817';
+            ctx.fillRect(x + 10 + legOffset, y + 52, 12, 6);
+            ctx.fillRect(x + w - 22 - legOffset, y + 52, 12, 6);
             
-            // Energy effect when jumping
-            if (!player.grounded) {
-                ctx.fillStyle = 'rgba(139, 92, 246, 0.6)';
+            // Energy trail when moving
+            if (Math.abs(player.vx) > 0.5 || !player.grounded) {
+                ctx.fillStyle = 'rgba(218, 165, 32, 0.5)';
                 ctx.beginPath();
-                ctx.moveTo(x + w/2 - 10, y + h);
-                ctx.lineTo(x + w/2, y + h + 15);
-                ctx.lineTo(x + w/2 + 10, y + h);
+                ctx.moveTo(x + w/2 - 15, y + h);
+                ctx.lineTo(x + w/2, y + h + 20);
+                ctx.lineTo(x + w/2 + 15, y + h);
                 ctx.fill();
             }
             
@@ -1745,7 +1819,8 @@
             currentLevel = levelNum;
             document.getElementById('startScreen').classList.add('hidden');
             document.getElementById('levelIndicator').classList.remove('hidden');
-            document.getElementById('levelIndicator').textContent = `⚔️ WAVE ${levelNum}`;
+            document.getElementById('dungeonLevel').textContent = levelNum;
+            document.getElementById('playerLevel').textContent = levelNum;
             
             gameRunning = true;
             generateLevel(levelNum);
@@ -1756,11 +1831,13 @@
             levelStartTime = Date.now();
             particles = [];
             floatingTexts = [];
+            spRecharge = 100;
             
             document.getElementById('score').textContent = score;
             document.getElementById('coins').textContent = coins;
             document.getElementById('lives').textContent = lives;
             document.getElementById('hpFill').style.width = '100%';
+            document.getElementById('spFill').style.width = '100%';
         }
 
         function levelComplete() {
@@ -1769,8 +1846,8 @@
             totalTime += timeTaken;
 
             let stars = '⭐';
-            if (levelCoins >= 8) stars = '⭐⭐';
-            if (levelCoins >= 15 && lives === 3) stars = '⭐⭐⭐';
+            if (levelCoins >= 10) stars = '⭐⭐';
+            if (levelCoins >= 20 && lives === 3) stars = '⭐⭐⭐';
 
             document.getElementById('levelScore').textContent = levelScore;
             document.getElementById('levelCoins').textContent = levelCoins;
@@ -1787,7 +1864,7 @@
                 localStorage.setItem('unlockedLevels', JSON.stringify(unlockedLevels));
             }
 
-            score += lives * 200;
+            score += lives * 300;
 
             if (currentLevel >= totalLevels) {
                 winGame();
@@ -1797,7 +1874,7 @@
 
             document.getElementById('levelIndicator').classList.add('hidden');
             createParticle(player.x, player.y, '#ffd700', 40);
-            createFloatingText(player.x + player.width/2, player.y - 30, 'WAVE CLEAR!', '#4ade80');
+            createFloatingText(player.x + player.width/2, player.y - 30, 'DUNGEON CLEAR!', '#4a8c2a');
         }
 
         function nextLevel() {
