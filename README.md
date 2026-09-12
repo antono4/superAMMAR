@@ -1,2 +1,26 @@
-Last updated: 2026-09-12 23:30:11 WIB
-Last updated: 2026-09-13 00:06:34 WIB
+# superAMMAR
+
+
+
+## 📋 Overview
+
+This repository contains **8 files** and is built with the following technologies:
+
+HTML
+
+## 🚀 Quick Start
+
+## ✨ Features
+
+- 📝 Auto-generated documentation
+
+## 🛠️ Technologies
+
+HTML
+
+## 📄 License
+
+MIT License
+
+---
+*Last updated: 2026-09-13 01:04:04 WIB*
